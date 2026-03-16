@@ -3052,12 +3052,19 @@
         }
 
         function updateRoom() {
+            if (!currentStudent) {
+                return;
+            }
             document.getElementById("scoreDisplay").innerHTML = `⭐ ${currentStudent.score}`;
             renderPetStage(); renderTasks(); renderBattlePanel(); renderShop(); renderInventory();
         }
 
         function renderPetStage() {
             const stage = document.getElementById("petStage");
+            if (!currentStudent) {
+                stage.innerHTML = "<div style='margin-top:100px; color:var(--text-sub); font-size:18px; text-align:center; line-height:1.6; z-index:2;'>加载中...</div>";
+                return;
+            }
             if(!currentStudent.pets || currentStudent.pets.length === 0) {
                 stage.innerHTML = "<div style='margin-top:100px; color:var(--text-sub); font-size:18px; text-align:center; line-height:1.6; z-index:2;'>结界内尚无生命气息...<br><br>去商铺开启【奇迹扭蛋】吧！🎁</div>";
                 return;
@@ -3227,6 +3234,10 @@
 
         function renderBattlePanel() {
             const container = document.getElementById("panelBattle");
+            if (!currentStudent) {
+                container.innerHTML = "<div style='text-align:center; padding:60px 0; color:var(--text-sub);'>加载中...</div>";
+                return;
+            }
             if(!currentStudent.pets || currentStudent.pets.length === 0) {
                 container.innerHTML = "<div style='text-align:center; padding:60px 0; color:var(--text-sub);'>请先召唤你的宠物，才能参与试炼对决！</div>";
                 return;
@@ -3330,6 +3341,7 @@
         }
 
         function updateBattleHp() {
+            if (!currentStudent || !currentStudent.pets || currentStudent.pets.length === 0) return;
             let config = currentBattle.config;
             let playerHpPercent = (currentBattle.playerHp / Math.floor(config.playerHp * getBattleBonus(currentStudent.pets[currentStudent.mainIndex || 0].species).hpMult)) * 100;
             document.getElementById("playerHpFill").style.width = `${playerHpPercent}%`;
@@ -3599,6 +3611,7 @@
         }
 
         function buyItem(idx) {
+            if (!currentStudent) return;
             let item = shop[idx];
             if(currentStudent.score < item.price) return toast("阳光能量不足！");
             if(item.type === 'gacha') {
@@ -3622,6 +3635,10 @@
 
         function renderInventory() {
             const container = document.getElementById("panelInventory");
+            if (!currentStudent) {
+                container.innerHTML = `<div style='text-align:center; padding:60px 0; color:var(--text-sub);'>加载中...</div>`;
+                return;
+            }
             if(!currentStudent.inventory || currentStudent.inventory.length === 0) {
                 container.innerHTML = `<div style='text-align:center; padding:60px 0; color:var(--text-sub);'>背包空空如也 🎒</div>`;
                 return;
@@ -3641,6 +3658,7 @@
         }
 
         function useInventoryItem(idx) {
+            if (!currentStudent) return;
             let item = currentStudent.inventory[idx];
             if(item.type === 'blindbox') {
                 item.count--;
@@ -3747,7 +3765,7 @@
         }
 
         function changePet(idx) { currentPetIndex = idx; renderPetStage(); }
-        function setMain() { currentStudent.mainIndex = currentPetIndex; save(); renderPetStage(); toast("契约已锁定！"); }
+        function setMain() { if (!currentStudent) return; currentStudent.mainIndex = currentPetIndex; save(); renderPetStage(); toast("契约已锁定！"); }
         function backToLobby() { 
             document.getElementById("viewRoom").classList.add("hidden"); 
             document.getElementById("viewLeaderboard").classList.add("hidden");
@@ -3776,6 +3794,10 @@
         
         function renderAchievements() {
             const container = document.getElementById("panelAchievements");
+            if (!currentStudent) {
+                container.innerHTML = "<div style='text-align:center; padding:60px 0; color:var(--text-sub);'>加载中...</div>";
+                return;
+            }
             let html = "";
             
             // 成就部分
@@ -4395,6 +4417,7 @@
         }
         
         function activateTitle(titleId) {
+            if (!currentStudent) return;
             currentStudent.titles.active = titleId;
             save();
             renderAchievements();
