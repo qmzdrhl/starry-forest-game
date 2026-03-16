@@ -3192,6 +3192,10 @@
                 toast('学生端不能操作每日任务');
                 return;
             }
+            // 确保currentStudent存在
+            if (!currentStudent) {
+                return;
+            }
             currentStudent.dailyTasks.completed.push(tid);
             currentStudent.score += tasks.find(x=>x.id===tid).score;
             save(); updateRoom();
@@ -3199,6 +3203,10 @@
         
         // 自动完成任务函数
         function completeAutoTask(trigger) {
+            // 确保currentStudent存在
+            if (!currentStudent) {
+                return;
+            }
             // 确保任务列表存在
             let today = getTodayStr();
             if(currentStudent.dailyTasks?.date !== today) currentStudent.dailyTasks = { date: today, completed: [] };
