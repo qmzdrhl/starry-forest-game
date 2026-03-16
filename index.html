@@ -2397,6 +2397,17 @@
                     };
                 });
                 
+                // 为学生设置当前学生数据
+                if (currentUser && currentUser.role === 'student') {
+                    const studentIndex = students.findIndex(s => s.id === currentUser.studentId);
+                    if (studentIndex !== -1) {
+                        currentStudent = students[studentIndex];
+                        console.log('设置当前学生:', { id: currentStudent.id, name: currentStudent.name });
+                    } else {
+                        console.error('找不到当前学生在students数组中的索引');
+                    }
+                }
+                
                 // 找到当前学生
                 currentStudent = students.find(s => s.id === studentId);
                 
@@ -2529,27 +2540,44 @@
 
         // ========== 数据同步 ==========
         async function save() {
+            console.log('开始保存数据:', { appMode, currentUser: currentUser ? { role: currentUser.role, studentId: currentUser.studentId } : null, currentStudent: currentStudent ? { id: currentStudent.id, name: currentStudent.name } : null });
+            
             if (appMode === 'offline') {
+                console.log('离线模式，保存到本地');
                 saveOfflineData();
                 return;
             }
-            if (!currentUser) return;
+            if (!currentUser) {
+                console.error('保存失败：currentUser为null');
+                return;
+            }
             
             try {
                 if (currentUser.role === 'teacher') {
+                    console.log('教师模式，同步所有学生数据');
                     // 教师可以同步所有学生数据
                     for (let s of students) {
-                        await syncStudentData(s);
+                        const result = await syncStudentData(s);
+                        console.log(`同步学生 ${s.name} 数据结果:`, result);
                     }
                 } else if (currentUser.role === 'student' && currentStudent) {
+                    console.log('学生模式，同步自己的数据');
                     // 学生只能同步自己的数据
                     if (currentUser.studentId !== currentStudent.id) {
-                        console.error('安全警告：学生尝试同步非自己的数据');
+                        console.error('安全警告：学生尝试同步非自己的数据', { currentUserStudentId: currentUser.studentId, currentStudentId: currentStudent.id });
                         toast('安全警告：无权修改此数据');
                         logout();
                         return;
                     }
-                    await syncStudentData(currentStudent);
+                    console.log('同步学生数据:', { studentId: currentStudent.id, name: currentStudent.name });
+                    const result = await syncStudentData(currentStudent);
+                    console.log('同步结果:', result);
+                    if (!result) {
+                        console.error('同步学生数据失败');
+                        toast('保存失败，请重试');
+                    }
+                } else {
+                    console.error('保存失败：角色或当前学生不存在', { role: currentUser.role, currentStudent: currentStudent ? '存在' : '不存在' });
                 }
                 console.log('数据保存完成');
             } catch (error) {
