@@ -2404,7 +2404,15 @@
                 document.getElementById('btnTeacherConsole').style.display = 'none';
                 document.getElementById('classDropdown').classList.add('hidden');
                 
-                enterRoom(0);
+                // 找到当前学生在students数组中的索引
+                const studentIndex = students.findIndex(s => s.id === studentId);
+                if (studentIndex !== -1) {
+                    enterRoom(studentIndex);
+                } else {
+                    console.error('找不到当前学生在students数组中的索引');
+                    toast('加载失败：找不到学生数据');
+                    logout();
+                }
             } catch (error) {
                 console.error('加载学生数据时发生错误:', error);
                 toast('加载失败：' + error.message);
@@ -2571,7 +2579,9 @@
         }
 
         function enterRoom(i) {
-            currentStudent = students[i]; currentPetIndex = currentStudent.mainIndex || 0;
+            currentStudent = students[i]; 
+            if (!currentStudent) return;
+            currentPetIndex = currentStudent.mainIndex || 0;
             if (currentPetIndex >= currentStudent.pets.length) currentPetIndex = 0;
             
             // 检查并更新登录 streak
