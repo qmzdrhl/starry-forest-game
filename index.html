@@ -3310,7 +3310,41 @@
                     </div>
                 `;
             });
-
+            
+            // 计算今日已使用的对决次数
+            const today = getTodayStr();
+            const todayBattleCount = currentStudent.dailyBattleCount?.[today] || 0;
+            const maxBattleCount = 3;
+            const hasParticipatedInOmniscience = currentStudent.dailyOmniscienceChallenge?.[today] || false;
+            
+            // 添加全知挑战模式
+            html += `
+                <div class="battle-difficulty-card">
+                    <div class="battle-difficulty-header">
+                        <div class="battle-difficulty-name difficulty-normal">🔮 全知挑战</div>
+                    </div>
+                    <div style="color:var(--text-sub); font-size:14px; margin-bottom:15px; line-height:1.5;">
+                        连续答题模式，答错一题即结束<br>
+                        每日仅限参与1次<br>
+                        根据连对题目数获得奖励
+                    </div>
+                    <div style="margin-bottom:15px;">
+                        <div style="font-size:14px; color:var(--text-sub); margin-bottom:8px;">挑战规则：</div>
+                        <div style="font-size:12px; color:var(--text-sub); line-height:1.4; margin-bottom:10px;">
+                            • 连续答题，答错或超时即结束<br>
+                            • 题目难度逐渐提升<br>
+                            • 连对越多，奖励越丰厚<br>
+                            • 与连对成就直接挂钩
+                        </div>
+                    </div>
+                    ${!hasParticipatedInOmniscience ? `
+                        <button class="btn btn-purple" style="width:100%;" onclick="startOmniscienceChallenge()">开始挑战</button>
+                    ` : `
+                        <button class="btn btn-danger" style="width:100%;" onclick="toast('今日已参与全知挑战！')">今日已挑战</button>
+                    `}
+                </div>
+            `;
+            
             container.innerHTML = `
                 <div style="margin-bottom:20px; padding:15px; background:rgba(0,0,0,0.2); border-radius:15px; border:1px solid rgba(255,255,255,0.05);">
                     <div style="font-weight:bold; color:var(--gold-glow); margin-bottom:8px;">📜 对决规则</div>
@@ -3319,6 +3353,13 @@
                         2. 无论胜负，对决结束后扣除饱食-15、干净-10<br>
                         3. 胜利获得阳光、道具奖励，心情提升<br>
                         4. 失败扣除成长值，心情下降
+                    </div>
+                </div>
+                <div style="margin-bottom:20px; padding:15px; background:rgba(251,191,36,0.1); border-radius:15px; border:1px solid rgba(251,191,36,0.3);">
+                    <div style="font-weight:bold; color:var(--gold-glow); margin-bottom:8px;">⏰ 每日次数</div>
+                    <div style="font-size:14px; color:var(--text-sub);">
+                        今日已参与：${todayBattleCount}/${maxBattleCount} 次<br>
+                        剩余次数：${maxBattleCount - todayBattleCount} 次
                     </div>
                 </div>
                 ${html}
@@ -3332,6 +3373,21 @@
                 return;
             }
 
+            // 检查每日战斗次数限制
+            const today = getTodayStr();
+            if (!currentStudent.dailyBattleCount) {
+                currentStudent.dailyBattleCount = {};
+            }
+            if (!currentStudent.dailyBattleCount[today]) {
+                currentStudent.dailyBattleCount[today] = 0;
+            }
+            
+            // 每日最多3次对决
+            if (currentStudent.dailyBattleCount[today] >= 3) {
+                toast("今日对决次数已用完！每日最多参与3次对决");
+                return;
+            }
+
             // 筛选符合条件的题目
             let filteredQuestions = window.questionBank.filter(q => q.difficulty === diffKey);
             if (subject !== 'mixed') {
@@ -3342,6 +3398,9 @@
                 toast(`该难度的${subject === 'mixed' ? '混合' : {math:'数学', chinese:'语文', english:'英语', science:'科学'}[subject]}题目暂无，请先到神圣祭坛添加题目！`);
                 return;
             }
+            
+            // 增加每日战斗次数
+            currentStudent.dailyBattleCount[today]++;
 
             let config = battleDifficultyConfig[diffKey];
             let bonus = getBattleBonus(mainPet.species);
@@ -3625,6 +3684,294 @@
             if(confirm("确定要放弃对决吗？将直接判定为失败，扣除对应惩罚！")) {
                 clearInterval(currentBattle.timer);
                 endBattle(false);
+            }
+        }
+        
+        // 全知挑战模式
+        function startOmniscienceChallenge() {
+            const today = getTodayStr();
+            
+            // 检查是否已经参与过
+            if (!currentStudent.dailyOmniscienceChallenge) {
+                currentStudent.dailyOmniscienceChallenge = {};
+            }
+            if (currentStudent.dailyOmniscienceChallenge[today]) {
+                toast("今日已参与全知挑战！");
+                return;
+            }
+            
+            // 标记今日已参与
+            currentStudent.dailyOmniscienceChallenge[today] = true;
+            
+            // 初始化全知挑战状态
+            currentOmniscienceChallenge = {
+                active: true,
+                correctStreak: 0,
+                usedQuestionIds: [],
+                timer: null,
+                timeLeft: 20 // 全知挑战时间更充裕
+            };
+            
+            // 显示全知挑战模态框
+            showOmniscienceModal();
+            
+            // 开始挑战
+            getOmniscienceQuestion();
+        }
+        
+        function showOmniscienceModal() {
+            // 创建全知挑战模态框
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.id = 'omniscienceModal';
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <h2 style="color:var(--purple-glow);">🔮 全知挑战</h2>
+                        <button class="btn btn-small" onclick="exitOmniscienceChallenge()">退出 ✖</button>
+                    </div>
+                    <div class="battle-timer" id="omniscienceTimer">答题时间：20秒</div>
+                    <div style="margin:30px 0; padding:20px; background:rgba(0,0,0,0.3); border-radius:15px; text-align:center;">
+                        <div style="font-size:24px; font-weight:bold; color:var(--gold-glow); margin-bottom:10px;">当前连对：<span id="omniscienceStreak">0</span> 题</div>
+                        <div style="font-size:14px; color:var(--text-sub);">连续答对越多，奖励越丰厚！</div>
+                    </div>
+                    <div class="battle-question-area">
+                        <div class="battle-question" id="omniscienceQuestion">题目加载中...</div>
+                        <div class="battle-options" id="omniscienceOptions"></div>
+                    </div>
+                    <div style="text-align:center; margin-top:20px;">
+                        <button class="btn btn-danger" onclick="exitOmniscienceChallenge()">放弃挑战</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function getOmniscienceQuestion() {
+            if (!currentOmniscienceChallenge || !currentOmniscienceChallenge.active) return;
+            
+            // 根据连对次数调整题目难度
+            let difficulty = 'easy';
+            if (currentOmniscienceChallenge.correctStreak >= 5) difficulty = 'normal';
+            if (currentOmniscienceChallenge.correctStreak >= 10) difficulty = 'hard';
+            
+            // 筛选符合条件的题目
+            let availableQuestions = window.questionBank.filter(q => 
+                q.difficulty === difficulty && 
+                !currentOmniscienceChallenge.usedQuestionIds.includes(q.id)
+            );
+            
+            // 如果该难度没有题目，使用其他难度
+            if (availableQuestions.length === 0) {
+                availableQuestions = window.questionBank.filter(q => 
+                    !currentOmniscienceChallenge.usedQuestionIds.includes(q.id)
+                );
+            }
+            
+            if (availableQuestions.length === 0) {
+                endOmniscienceChallenge(true);
+                return;
+            }
+            
+            // 随机选择题目
+            let randomIndex = Math.floor(Math.random() * availableQuestions.length);
+            currentOmniscienceChallenge.currentQuestion = availableQuestions[randomIndex];
+            currentOmniscienceChallenge.usedQuestionIds.push(currentOmniscienceChallenge.currentQuestion.id);
+            
+            // 渲染题目
+            renderOmniscienceQuestion();
+            
+            // 开始计时
+            startOmniscienceTimer();
+        }
+        
+        function renderOmniscienceQuestion() {
+            if (!currentOmniscienceChallenge || !currentOmniscienceChallenge.currentQuestion) return;
+            
+            let q = currentOmniscienceChallenge.currentQuestion;
+            document.getElementById("omniscienceQuestion").innerText = q.question;
+            let optionsHtml = "";
+            
+            if (q.type === 'choice') {
+                q.options.forEach((option, idx) => {
+                    optionsHtml += `
+                        <button class="battle-option-btn" data-index="${idx}" onclick="answerOmniscienceQuestion(${idx})">
+                            ${option}
+                        </button>
+                    `;
+                });
+            } else if (q.type === 'judge') {
+                optionsHtml += `
+                    <button class="battle-option-btn" data-index="1" onclick="answerOmniscienceQuestion(1)">正确</button>
+                    <button class="battle-option-btn" data-index="0" onclick="answerOmniscienceQuestion(0)">错误</button>
+                `;
+            } else if (q.type === 'fill') {
+                optionsHtml += `
+                    <input type="text" id="fillAnswer" placeholder="请输入答案" style="width:100%; padding:12px; margin-bottom:10px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:#fff;">
+                    <button class="battle-option-btn" style="grid-column: 1 / -1;" onclick="submitOmniscienceFillAnswer()">提交答案</button>
+                `;
+            }
+            
+            document.getElementById("omniscienceOptions").innerHTML = optionsHtml;
+        }
+        
+        function startOmniscienceTimer() {
+            if (!currentOmniscienceChallenge) return;
+            
+            clearInterval(currentOmniscienceChallenge.timer);
+            currentOmniscienceChallenge.timeLeft = 20;
+            
+            currentOmniscienceChallenge.timer = setInterval(() => {
+                currentOmniscienceChallenge.timeLeft--;
+                document.getElementById("omniscienceTimer").innerText = `答题时间：${currentOmniscienceChallenge.timeLeft}秒`;
+                
+                if (currentOmniscienceChallenge.timeLeft <= 0) {
+                    clearInterval(currentOmniscienceChallenge.timer);
+                    endOmniscienceChallenge(false);
+                }
+            }, 1000);
+        }
+        
+        function answerOmniscienceQuestion(index) {
+            if (!currentOmniscienceChallenge || !currentOmniscienceChallenge.currentQuestion) return;
+            
+            clearInterval(currentOmniscienceChallenge.timer);
+            
+            let q = currentOmniscienceChallenge.currentQuestion;
+            let isCorrect = false;
+            
+            if (q.type === 'choice' || q.type === 'judge') {
+                isCorrect = index === q.answer;
+            }
+            
+            if (isCorrect) {
+                // 答对了，增加连对次数
+                currentOmniscienceChallenge.correctStreak++;
+                document.getElementById("omniscienceStreak").innerText = currentOmniscienceChallenge.correctStreak;
+                
+                // 更新连对成就进度
+                currentStudent.achievements.progress.correctStreak = currentOmniscienceChallenge.correctStreak;
+                if (currentOmniscienceChallenge.correctStreak > currentStudent.achievements.progress.maxCorrectStreak) {
+                    currentStudent.achievements.progress.maxCorrectStreak = currentOmniscienceChallenge.correctStreak;
+                }
+                
+                // 继续下一题
+                getOmniscienceQuestion();
+            } else {
+                // 答错了，结束挑战
+                endOmniscienceChallenge(false);
+            }
+        }
+        
+        function submitOmniscienceFillAnswer() {
+            if (!currentOmniscienceChallenge || !currentOmniscienceChallenge.currentQuestion) return;
+            
+            clearInterval(currentOmniscienceChallenge.timer);
+            
+            let q = currentOmniscienceChallenge.currentQuestion;
+            let userAnswer = document.getElementById("fillAnswer").value.trim();
+            let isCorrect = userAnswer === q.answer;
+            
+            if (isCorrect) {
+                // 答对了，增加连对次数
+                currentOmniscienceChallenge.correctStreak++;
+                document.getElementById("omniscienceStreak").innerText = currentOmniscienceChallenge.correctStreak;
+                
+                // 更新连对成就进度
+                currentStudent.achievements.progress.correctStreak = currentOmniscienceChallenge.correctStreak;
+                if (currentOmniscienceChallenge.correctStreak > currentStudent.achievements.progress.maxCorrectStreak) {
+                    currentStudent.achievements.progress.maxCorrectStreak = currentOmniscienceChallenge.correctStreak;
+                }
+                
+                // 继续下一题
+                getOmniscienceQuestion();
+            } else {
+                // 答错了，结束挑战
+                endOmniscienceChallenge(false);
+            }
+        }
+        
+        function endOmniscienceChallenge(isEmptyBank) {
+            if (!currentOmniscienceChallenge) return;
+            
+            clearInterval(currentOmniscienceChallenge.timer);
+            
+            const streak = currentOmniscienceChallenge.correctStreak;
+            let rewardMessage = "";
+            let totalScore = 0;
+            
+            // 计算奖励（设计合理的奖励曲线）
+            if (streak >= 1) {
+                // 基础奖励：每答对1题获得5阳光
+                totalScore = streak * 5;
+                
+                // 额外奖励：根据连对次数
+                if (streak >= 3) totalScore += 10; // 3题额外10阳光
+                if (streak >= 5) totalScore += 20; // 5题额外20阳光
+                if (streak >= 8) totalScore += 30; // 8题额外30阳光
+                if (streak >= 10) totalScore += 50; // 10题额外50阳光
+                if (streak >= 15) totalScore += 100; // 15题额外100阳光
+                
+                // 道具奖励
+                if (streak >= 5) {
+                    // 5题以上获得道具
+                    const randomItem = Math.random() > 0.5 ? "魔法曲奇" : "星空铃铛";
+                    addItemToInventory(currentStudent.inventory, {
+                        id: 'omniscience_' + Date.now(),
+                        name: randomItem,
+                        icon: randomItem === "魔法曲奇" ? "🍪" : "🔔",
+                        type: "shop",
+                        itemData: {
+                            name: randomItem,
+                            effect: randomItem === "魔法曲奇" ? "饱食+20" : "心情+20"
+                        }
+                    });
+                    rewardMessage += `，获得道具：${randomItem}`;
+                }
+                
+                if (streak >= 10) {
+                    // 10题以上获得神秘盲盒
+                    addItemToInventory(currentStudent.inventory, {
+                        id: 'omniscience_box_' + Date.now(),
+                        name: "神秘盲盒",
+                        icon: "🎁",
+                        type: "blindbox"
+                    });
+                    rewardMessage += "，获得神秘盲盒";
+                }
+                
+                // 增加阳光
+                currentStudent.score += totalScore;
+                rewardMessage = `🎉 挑战结束！连对 ${streak} 题，获得 ⭐阳光+${totalScore}${rewardMessage}`;
+            } else {
+                rewardMessage = "😔 挑战结束！连对 0 题，没有获得奖励";
+            }
+            
+            // 保存数据
+            save();
+            
+            // 关闭模态框
+            document.getElementById("omniscienceModal").remove();
+            
+            // 显示奖励信息
+            alert(rewardMessage);
+            
+            // 更新界面
+            updateRoom();
+            
+            // 重置挑战状态
+            currentOmniscienceChallenge = null;
+        }
+        
+        function exitOmniscienceChallenge() {
+            if (currentOmniscienceChallenge) {
+                clearInterval(currentOmniscienceChallenge.timer);
+                currentOmniscienceChallenge = null;
+            }
+            
+            const modal = document.getElementById("omniscienceModal");
+            if (modal) {
+                modal.remove();
             }
         }
 
@@ -4565,8 +4912,12 @@
             let successCount = 0;
             if (appMode === 'offline') {
                 students.forEach(s => {
-                    s.dailyTasks = { date: today, completed: [] };
-                    tasks.forEach(t => {
+                    // 只完成学生不能控制的任务（manual类型）
+                    const manualTasks = tasks.filter(t => t.type === 'manual');
+                    if (!s.dailyTasks || s.dailyTasks.date !== today) {
+                        s.dailyTasks = { date: today, completed: [] };
+                    }
+                    manualTasks.forEach(t => {
                         if (!s.dailyTasks.completed.includes(t.id)) {
                             s.dailyTasks.completed.push(t.id);
                             s.score += t.score;
@@ -4582,8 +4933,12 @@
             }
             for (let s of students) {
                 try {
-                    s.dailyTasks = { date: today, completed: [] };
-                    tasks.forEach(t => {
+                    // 只完成学生不能控制的任务（manual类型）
+                    const manualTasks = tasks.filter(t => t.type === 'manual');
+                    if (!s.dailyTasks || s.dailyTasks.date !== today) {
+                        s.dailyTasks = { date: today, completed: [] };
+                    }
+                    manualTasks.forEach(t => {
                         if (!s.dailyTasks.completed.includes(t.id)) {
                             s.dailyTasks.completed.push(t.id);
                             s.score += t.score;
