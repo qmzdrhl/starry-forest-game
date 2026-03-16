@@ -2398,18 +2398,12 @@
                 });
                 
                 // 为学生设置当前学生数据
-                if (currentUser && currentUser.role === 'student') {
-                    const studentIndex = students.findIndex(s => s.id === currentUser.studentId);
-                    if (studentIndex !== -1) {
-                        currentStudent = students[studentIndex];
-                        console.log('设置当前学生:', { id: currentStudent.id, name: currentStudent.name });
-                    } else {
-                        console.error('找不到当前学生在students数组中的索引');
-                    }
-                }
-                
-                // 找到当前学生
                 currentStudent = students.find(s => s.id === studentId);
+                if (currentStudent) {
+                    console.log('设置当前学生:', { id: currentStudent.id, name: currentStudent.name });
+                } else {
+                    console.error('找不到当前学生:', studentId);
+                }
                 
                 // 隐藏教师功能，确保学生模式下无法访问教师控制台
                 document.getElementById('btnTeacherConsole').style.display = 'none';
@@ -5816,21 +5810,41 @@
                     updated_at: new Date().toISOString()
                 };
                 
-                // 执行数据同步 - 使用 upsert 操作，简化逻辑并提高速度
-                const { error } = await supabaseClient
+                console.log('准备同步数据:', {
+                    studentId: student.id,
+                    studentName: student.name,
+                    dataSize: JSON.stringify(studentData).length
+                });
+                
+                // 执行数据同步 - 使用正确的 upsert 语法
+                const { data, error } = await supabaseClient
                     .from('student_data')
-                    .upsert(studentData, { onConflict: 'user_id' });
+                    .upsert(studentData)
+                    .select();
                 
                 if (error) {
-                    console.error('同步数据失败:', error);
+                    console.error('同步数据失败:', {
+                        error: error,
+                        errorMessage: error.message,
+                        errorDetails: error.details,
+                        studentId: student.id
+                    });
                     logError(error, 'syncStudentData - upsert');
                     return false;
                 }
                 
-                console.log('数据同步成功:', student.name || student.id);
+                console.log('数据同步成功:', {
+                    studentId: student.id,
+                    studentName: student.name,
+                    result: data
+                });
                 return true;
             } catch (error) {
-                console.error('同步过程中发生错误:', error);
+                console.error('同步过程中发生错误:', {
+                    error: error,
+                    errorMessage: error.message,
+                    studentId: student.id
+                });
                 logError(error, 'syncStudentData - catch');
                 return false;
             }
