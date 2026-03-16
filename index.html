@@ -5816,10 +5816,10 @@
                     dataSize: JSON.stringify(studentData).length
                 });
                 
-                // 执行数据同步 - 使用正确的 upsert 语法
+                // 执行数据同步 - 使用正确的 upsert 语法，指定 user_id 作为冲突字段
                 const { data, error } = await supabaseClient
                     .from('student_data')
-                    .upsert(studentData)
+                    .upsert(studentData, { onConflict: 'user_id' })
                     .select();
                 
                 if (error) {
