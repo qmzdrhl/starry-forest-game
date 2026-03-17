@@ -3581,12 +3581,6 @@
                 currentBattle.enemyHp = Math.max(0, currentBattle.enemyHp - currentBattle.playerAtk);
                 setTimeout(() => enemyAvatar.classList.remove("hit"), 500);
                 
-                // 更新连续答对题目统计
-                currentStudent.achievements.progress.correctStreak += 1;
-                if (currentStudent.achievements.progress.correctStreak > currentStudent.achievements.progress.maxCorrectStreak) {
-                    currentStudent.achievements.progress.maxCorrectStreak = currentStudent.achievements.progress.correctStreak;
-                }
-                
                 // 更新学科统计
                 if (currentBattle.currentQuestion.subject) {
                     currentStudent.achievements.progress.subjectStats[currentBattle.currentQuestion.subject] = 
@@ -3597,9 +3591,6 @@
                 playerAvatar.classList.add("hit");
                 currentBattle.playerHp = Math.max(0, currentBattle.playerHp - currentBattle.enemyAtk);
                 setTimeout(() => playerAvatar.classList.remove("hit"), 500);
-                
-                // 重置连续答对题目统计
-                currentStudent.achievements.progress.correctStreak = 0;
             }
 
             setTimeout(() => {
