@@ -4177,13 +4177,26 @@
                                pet.mutationCount < 2 && 
                                item.type === 'mystery';
                 
-                if(item.type === 'shop') {
-                    pet[item.itemData.type] = Math.min(100, pet[item.itemData.type] + item.itemData.value);
-                    let actualGrowth = item.itemData.growth * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
+                if(item.type === 'shop' || ['hunger', 'mood', 'clean'].includes(item.type)) {
+                    // 处理商店道具和直接类型的道具
+                    const itemData = item.itemData || item;
+                    if (itemData.type && itemData.value) {
+                        pet[itemData.type] = Math.min(100, pet[itemData.type] + itemData.value);
+                    }
+                    let actualGrowth = (itemData.growth || 0) * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
                     pet.growth += actualGrowth;
                     pet.rankGrowth += actualGrowth;
+                } else if(item.type === 'rare') {
+                    // 稀有道具效果：大幅增加成长值
+                    let actualGrowth = 50 * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
+                    pet.growth += actualGrowth;
+                    pet.rankGrowth += actualGrowth;
+                    // 同时提升所有属性
+                    pet.hunger = Math.min(100, pet.hunger + 30);
+                    pet.mood = Math.min(100, pet.mood + 30);
+                    pet.clean = Math.min(100, pet.clean + 30);
                 } else { 
-                    let actualGrowth = item.growthVal * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
+                    let actualGrowth = (item.growthVal || 0) * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
                     pet.growth += actualGrowth;
                     pet.rankGrowth += actualGrowth;
                 }
