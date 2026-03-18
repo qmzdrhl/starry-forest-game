@@ -1501,7 +1501,7 @@
                 enemyHp: 80,
                 playerAtk: 20,
                 enemyAtk: 15,
-                enemyAvatar: "<img src='pets/boss_easy.png' alt='初级守护者' class='petIcon' onerror="this.outerHTML='👾'">",
+                enemyAvatar: "👾",
                 enemyName: "初级守护者",
                 reward: { score: 15, mood: 20, items: ["魔法曲奇", "星空铃铛", "清泉沐浴"], blindBoxChance: 0 },
                 punish: { growth: 5, mood: 15 }
@@ -1513,7 +1513,7 @@
                 enemyHp: 150,
                 playerAtk: 25,
                 enemyAtk: 25,
-                enemyAvatar: "<img src='pets/boss_normal.png' alt='进阶守护者' class='petIcon' onerror="this.outerHTML='👿'">",
+                enemyAvatar: "👿",
                 enemyName: "进阶守护者",
                 reward: { score: 30, mood: 30, items: ["精灵盛宴", "幻境游乐票", "星光洗礼"], blindBoxChance: 0.3 },
                 punish: { growth: 15, mood: 25 }
@@ -1525,7 +1525,7 @@
                 enemyHp: 250,
                 playerAtk: 30,
                 enemyAtk: 35,
-                enemyAvatar: "<img src='pets/boss_hard.png' alt='大师守护者' class='petIcon' onerror="this.outerHTML='👹'">",
+                enemyAvatar: "👹",
                 enemyName: "大师守护者",
                 reward: { score: 60, mood: 50, items: [], blindBoxChance: 1 },
                 punish: { growth: 30, mood: 40 }
@@ -1955,10 +1955,7 @@
             return { text: "完全体", color: "#fbbf24" };
         }
         function getPetIcon(pet) { 
-            const stage = getPetStageLevel(pet.growth);
-            const imagePath = `pets/${pet.species}_stage${stage + 1}.png`;
-            const emoji = petEvolutionMap[pet.species][stage];
-            return `<img src="${imagePath}" alt="${pet.species}" class="petIcon" onerror="this.outerHTML='${emoji}'">`;
+            return petEvolutionMap[pet.species][getPetStageLevel(pet.growth)]; 
         }
         function getRandomSpecies(ownedSpecies, excludeNormal = false) {
             let roll = Math.random();
