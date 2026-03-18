@@ -1284,110 +1284,111 @@
         const achievements = {
             // 连续登录成就
             loginStreak: [
-                { id: 'login_3', name: '初露锋芒', description: '连续登录3天', requirement: 3, reward: { score: 50 } },
-                { id: 'login_7', name: '坚持不懈', description: '连续登录7天', requirement: 7, reward: { score: 100, item: '神秘盲盒' } },
-                { id: 'login_14', name: '持之以恒', description: '连续登录14天', requirement: 14, reward: { score: 200, item: '神秘盲盒' } },
-                { id: 'login_30', name: '钢铁意志', description: '连续登录30天', requirement: 30, reward: { score: 500, item: '神秘盲盒' } },
-                { id: 'login_60', name: '风雨无阻', description: '连续登录60天', requirement: 60, reward: { score: 800, item: '神秘盲盒' } },
-                { id: 'login_90', name: '百日精英', description: '连续登录90天', requirement: 90, reward: { score: 1000, item: '神秘盲盒' } }
+                { id: 'login_3', name: '初露锋芒', description: '连续登录3天', requirement: 3, reward: { score: 40 } },
+                { id: 'login_7', name: '坚持不懈', description: '连续登录7天', requirement: 7, reward: { score: 80, item: '神秘盲盒' } },
+                { id: 'login_14', name: '持之以恒', description: '连续登录14天', requirement: 14, reward: { score: 160, item: '神秘盲盒' } },
+                { id: 'login_30', name: '钢铁意志', description: '连续登录30天', requirement: 30, reward: { score: 400, item: '神秘盲盒' } },
+                { id: 'login_60', name: '风雨无阻', description: '连续登录60天', requirement: 60, reward: { score: 640, item: '神秘盲盒' } },
+                { id: 'login_90', name: '百日精英', description: '连续登录90天', requirement: 90, reward: { score: 800, item: '神秘盲盒' } }
             ],
-            // 连续答对题目成就
-            correctStreak: [
-                { id: 'correct_5', name: '小试牛刀', description: '连续答对5题', requirement: 5, reward: { score: 30 } },
-                { id: 'correct_10', name: '答题高手', description: '连续答对10题', requirement: 10, reward: { score: 60 } },
-                { id: 'correct_20', name: '答题大师', description: '连续答对20题', requirement: 20, reward: { score: 120 } },
-                { id: 'correct_50', name: '答题之神', description: '连续答对50题', requirement: 50, reward: { score: 300 } },
-                { id: 'correct_100', name: '答题圣手', description: '连续答对100题', requirement: 100, reward: { score: 500, item: '神秘盲盒' } }
-            ],
+
             // 宠物养成成就
             petGrowth: [
-                { id: 'pet_stage_1', name: '成长启蒙', description: '宠物进化到成长期', requirement: 1, reward: { score: 100 } },
-                { id: 'pet_stage_2', name: '完全进化', description: '宠物进化到完全体', requirement: 2, reward: { score: 300, item: '神秘盲盒' } },
-                { id: 'pet_growth_500', name: '茁壮成长', description: '宠物成长值达到500', requirement: 500, reward: { score: 150 } },
-                { id: 'pet_growth_1000', name: '茁壮成长', description: '宠物成长值达到1000', requirement: 1000, reward: { score: 200 } },
-                { id: 'pet_growth_1500', name: '终极形态', description: '宠物成长值达到1500', requirement: 1500, reward: { score: 500, item: '神秘盲盒' } },
-                { id: 'pet_collect_5', name: '宠物爱好者', description: '收集5只宠物', requirement: 5, reward: { score: 150 } },
-                { id: 'pet_collect_10', name: '宠物收藏家', description: '收集10只宠物', requirement: 10, reward: { score: 200, item: '神秘盲盒' } },
-                { id: 'pet_collect_15', name: '宠物大师', description: '收集15只宠物', requirement: 15, reward: { score: 300, item: '神秘盲盒' } },
-                { id: 'pet_mutate_1', name: '变异初现', description: '首次获得变异宠物', requirement: 1, reward: { score: 200, item: '神秘盲盒' } },
-                { id: 'pet_mutate_2', name: '变异大师', description: '获得2次变异宠物', requirement: 2, reward: { score: 500, item: '神秘盲盒' } }
+                { id: 'pet_stage_1', name: '成长启蒙', description: '宠物进化到成长期', requirement: 1, reward: { score: 80 } },
+                { id: 'pet_stage_2', name: '完全进化', description: '宠物进化到完全体', requirement: 2, reward: { score: 240, item: '神秘盲盒' } },
+                { id: 'pet_growth_500', name: '茁壮成长', description: '宠物成长值达到500', requirement: 500, reward: { score: 120 } },
+                { id: 'pet_growth_1000', name: '茁壮成长', description: '宠物成长值达到1000', requirement: 1000, reward: { score: 160 } },
+                { id: 'pet_growth_1500', name: '终极形态', description: '宠物成长值达到1500', requirement: 1500, reward: { score: 400, item: '神秘盲盒' } },
+                { id: 'pet_collect_5', name: '宠物爱好者', description: '收集5只宠物', requirement: 5, reward: { score: 120 } },
+                { id: 'pet_collect_10', name: '宠物收藏家', description: '收集10只宠物', requirement: 10, reward: { score: 160, item: '神秘盲盒' } },
+                { id: 'pet_collect_15', name: '宠物大师', description: '收集15只宠物', requirement: 15, reward: { score: 240, item: '神秘盲盒' } },
+                { id: 'pet_mutate_1', name: '变异初现', description: '首次获得变异宠物', requirement: 1, reward: { score: 160, item: '神秘盲盒' } },
+                { id: 'pet_mutate_2', name: '变异大师', description: '获得2次变异宠物', requirement: 2, reward: { score: 400, item: '神秘盲盒' } }
             ],
             // 宠物属性成就
             petStats: [
-                { id: 'pet_stats_7d', name: '精心呵护', description: '保持宠物三条属性全满7天', requirement: 7, reward: { score: 200, item: '神秘盲盒' } },
-                { id: 'pet_stats_14d', name: '无微不至', description: '保持宠物三条属性全满14天', requirement: 14, reward: { score: 400, item: '神秘盲盒' } },
-                { id: 'pet_stats_30d', name: '宠物专家', description: '保持宠物三条属性全满30天', requirement: 30, reward: { score: 800, item: '神秘盲盒' } }
+                { id: 'pet_stats_7d', name: '精心呵护', description: '保持宠物三条属性全满7天', requirement: 7, reward: { score: 160, item: '神秘盲盒' } },
+                { id: 'pet_stats_14d', name: '无微不至', description: '保持宠物三条属性全满14天', requirement: 14, reward: { score: 320, item: '神秘盲盒' } },
+                { id: 'pet_stats_30d', name: '宠物专家', description: '保持宠物三条属性全满30天', requirement: 30, reward: { score: 640, item: '神秘盲盒' } }
             ],
             // 学科成就
             subjectAchievements: {
                 math: [
-                    { id: 'math_10', name: '数学新手', description: '答对10道数学题', requirement: 10, reward: { score: 50 } },
-                    { id: 'math_50', name: '数学达人', description: '答对50道数学题', requirement: 50, reward: { score: 150 } },
-                    { id: 'math_100', name: '数学大师', description: '答对100道数学题', requirement: 100, reward: { score: 300 } },
-                    { id: 'math_200', name: '数学专家', description: '答对200道数学题', requirement: 200, reward: { score: 500, item: '神秘盲盒' } },
-                    { id: 'math_500', name: '数学之神', description: '答对500道数学题', requirement: 500, reward: { score: 1000, item: '神秘盲盒' } }
+                    { id: 'math_10', name: '数学新手', description: '答对10道数学题', requirement: 10, reward: { score: 40 } },
+                    { id: 'math_50', name: '数学达人', description: '答对50道数学题', requirement: 50, reward: { score: 120 } },
+                    { id: 'math_100', name: '数学大师', description: '答对100道数学题', requirement: 100, reward: { score: 240 } },
+                    { id: 'math_200', name: '数学专家', description: '答对200道数学题', requirement: 200, reward: { score: 400, item: '神秘盲盒' } },
+                    { id: 'math_500', name: '数学之神', description: '答对500道数学题', requirement: 500, reward: { score: 800, item: '神秘盲盒' } }
                 ],
                 chinese: [
-                    { id: 'chinese_10', name: '语文新手', description: '答对10道语文题', requirement: 10, reward: { score: 50 } },
-                    { id: 'chinese_50', name: '语文达人', description: '答对50道语文题', requirement: 50, reward: { score: 150 } },
-                    { id: 'chinese_100', name: '语文大师', description: '答对100道语文题', requirement: 100, reward: { score: 300 } },
-                    { id: 'chinese_200', name: '语文专家', description: '答对200道语文题', requirement: 200, reward: { score: 500, item: '神秘盲盒' } },
-                    { id: 'chinese_500', name: '语文之神', description: '答对500道语文题', requirement: 500, reward: { score: 1000, item: '神秘盲盒' } }
+                    { id: 'chinese_10', name: '语文新手', description: '答对10道语文题', requirement: 10, reward: { score: 40 } },
+                    { id: 'chinese_50', name: '语文达人', description: '答对50道语文题', requirement: 50, reward: { score: 120 } },
+                    { id: 'chinese_100', name: '语文大师', description: '答对100道语文题', requirement: 100, reward: { score: 240 } },
+                    { id: 'chinese_200', name: '语文专家', description: '答对200道语文题', requirement: 200, reward: { score: 400, item: '神秘盲盒' } },
+                    { id: 'chinese_500', name: '语文之神', description: '答对500道语文题', requirement: 500, reward: { score: 800, item: '神秘盲盒' } }
                 ],
                 english: [
-                    { id: 'english_10', name: '英语新手', description: '答对10道英语题', requirement: 10, reward: { score: 50 } },
-                    { id: 'english_50', name: '英语达人', description: '答对50道英语题', requirement: 50, reward: { score: 150 } },
-                    { id: 'english_100', name: '英语大师', description: '答对100道英语题', requirement: 100, reward: { score: 300 } },
-                    { id: 'english_200', name: '英语专家', description: '答对200道英语题', requirement: 200, reward: { score: 500, item: '神秘盲盒' } },
-                    { id: 'english_500', name: '英语之神', description: '答对500道英语题', requirement: 500, reward: { score: 1000, item: '神秘盲盒' } }
+                    { id: 'english_10', name: '英语新手', description: '答对10道英语题', requirement: 10, reward: { score: 40 } },
+                    { id: 'english_50', name: '英语达人', description: '答对50道英语题', requirement: 50, reward: { score: 120 } },
+                    { id: 'english_100', name: '英语大师', description: '答对100道英语题', requirement: 100, reward: { score: 240 } },
+                    { id: 'english_200', name: '英语专家', description: '答对200道英语题', requirement: 200, reward: { score: 400, item: '神秘盲盒' } },
+                    { id: 'english_500', name: '英语之神', description: '答对500道英语题', requirement: 500, reward: { score: 800, item: '神秘盲盒' } }
                 ],
                 science: [
-                    { id: 'science_10', name: '科学新手', description: '答对10道科学题', requirement: 10, reward: { score: 50 } },
-                    { id: 'science_50', name: '科学达人', description: '答对50道科学题', requirement: 50, reward: { score: 150 } },
-                    { id: 'science_100', name: '科学大师', description: '答对100道科学题', requirement: 100, reward: { score: 300 } },
-                    { id: 'science_200', name: '科学专家', description: '答对200道科学题', requirement: 200, reward: { score: 500, item: '神秘盲盒' } },
-                    { id: 'science_500', name: '科学之神', description: '答对500道科学题', requirement: 500, reward: { score: 1000, item: '神秘盲盒' } }
+                    { id: 'science_10', name: '科学新手', description: '答对10道科学题', requirement: 10, reward: { score: 40 } },
+                    { id: 'science_50', name: '科学达人', description: '答对50道科学题', requirement: 50, reward: { score: 120 } },
+                    { id: 'science_100', name: '科学大师', description: '答对100道科学题', requirement: 100, reward: { score: 240 } },
+                    { id: 'science_200', name: '科学专家', description: '答对200道科学题', requirement: 200, reward: { score: 400, item: '神秘盲盒' } },
+                    { id: 'science_500', name: '科学之神', description: '答对500道科学题', requirement: 500, reward: { score: 800, item: '神秘盲盒' } }
                 ]
             },
             // 战斗成就
             battle: [
-                { id: 'battle_win_10', name: '战斗新星', description: '赢得10场对战', requirement: 10, reward: { score: 100 } },
-                { id: 'battle_win_50', name: '战斗高手', description: '赢得50场对战', requirement: 50, reward: { score: 300 } },
-                { id: 'battle_win_100', name: '战斗大师', description: '赢得100场对战', requirement: 100, reward: { score: 500, item: '神秘盲盒' } },
-                { id: 'battle_win_200', name: '战斗之王', description: '赢得200场对战', requirement: 200, reward: { score: 800, item: '神秘盲盒' } },
-                { id: 'battle_win_500', name: '斗战神', description: '赢得500场对战', requirement: 500, reward: { score: 1500, item: '神秘盲盒' } },
-                { id: 'battle_win_hard_10', name: '大师挑战者', description: '赢得10场大师难度对战', requirement: 10, reward: { score: 200, item: '神秘盲盒' } },
-                { id: 'battle_win_hard_50', name: '大师征服者', description: '赢得50场大师难度对战', requirement: 50, reward: { score: 500, item: '神秘盲盒' } }
+                { id: 'battle_win_10', name: '战斗新星', description: '赢得10场对战', requirement: 10, reward: { score: 80 } },
+                { id: 'battle_win_50', name: '战斗高手', description: '赢得50场对战', requirement: 50, reward: { score: 240 } },
+                { id: 'battle_win_100', name: '战斗大师', description: '赢得100场对战', requirement: 100, reward: { score: 400, item: '神秘盲盒' } },
+                { id: 'battle_win_200', name: '战斗之王', description: '赢得200场对战', requirement: 200, reward: { score: 640, item: '神秘盲盒' } },
+                { id: 'battle_win_500', name: '斗战神', description: '赢得500场对战', requirement: 500, reward: { score: 1200, item: '神秘盲盒' } },
+                { id: 'battle_win_hard_10', name: '大师挑战者', description: '赢得10场大师难度对战', requirement: 10, reward: { score: 160, item: '神秘盲盒' } },
+                { id: 'battle_win_hard_50', name: '大师征服者', description: '赢得50场大师难度对战', requirement: 50, reward: { score: 400, item: '神秘盲盒' } }
             ],
             // 经济成就
             economy: [
-                { id: 'spend_500', name: '初入商海', description: '花费500阳光', requirement: 500, reward: { score: 100 } },
-                { id: 'spend_1000', name: '消费达人', description: '花费1000阳光', requirement: 1000, reward: { score: 200 } },
-                { id: 'spend_2000', name: '购物专家', description: '花费2000阳光', requirement: 2000, reward: { score: 300, item: '神秘盲盒' } },
-                { id: 'spend_5000', name: '消费大亨', description: '花费5000阳光', requirement: 5000, reward: { score: 500, item: '神秘盲盒' } },
-                { id: 'earn_1000', name: '阳光收集者', description: '获得1000阳光', requirement: 1000, reward: { score: 150 } },
-                { id: 'earn_5000', name: '阳光富翁', description: '获得5000阳光', requirement: 5000, reward: { score: 300, item: '神秘盲盒' } },
-                { id: 'earn_10000', name: '阳光巨富', description: '获得10000阳光', requirement: 10000, reward: { score: 800, item: '神秘盲盒' } }
+                { id: 'spend_500', name: '初入商海', description: '花费500阳光', requirement: 500, reward: { score: 80 } },
+                { id: 'spend_1000', name: '消费达人', description: '花费1000阳光', requirement: 1000, reward: { score: 160 } },
+                { id: 'spend_2000', name: '购物专家', description: '花费2000阳光', requirement: 2000, reward: { score: 240, item: '神秘盲盒' } },
+                { id: 'spend_5000', name: '消费大亨', description: '花费5000阳光', requirement: 5000, reward: { score: 400, item: '神秘盲盒' } },
+                { id: 'earn_1000', name: '阳光收集者', description: '获得1000阳光', requirement: 1000, reward: { score: 120 } },
+                { id: 'earn_5000', name: '阳光富翁', description: '获得5000阳光', requirement: 5000, reward: { score: 240, item: '神秘盲盒' } },
+                { id: 'earn_10000', name: '阳光巨富', description: '获得10000阳光', requirement: 10000, reward: { score: 640, item: '神秘盲盒' } }
             ],
             // 物品成就
             items: [
-                { id: 'open_10_boxes', name: '开箱新手', description: '打开10个盲盒', requirement: 10, reward: { score: 150 } },
-                { id: 'open_50_boxes', name: '开箱专家', description: '打开50个盲盒', requirement: 50, reward: { score: 300, item: '神秘盲盒' } },
-                { id: 'collect_all_mystery', name: '神秘收藏家', description: '收集所有神秘物品', requirement: 5, reward: { score: 500, item: '神秘盲盒' } },
-                { id: 'use_50_items', name: '物品使用者', description: '使用50个物品', requirement: 50, reward: { score: 200 } },
-                { id: 'use_100_items', name: '物品大师', description: '使用100个物品', requirement: 100, reward: { score: 400, item: '神秘盲盒' } }
+                { id: 'open_10_boxes', name: '开箱新手', description: '打开10个盲盒', requirement: 10, reward: { score: 120 } },
+                { id: 'open_50_boxes', name: '开箱专家', description: '打开50个盲盒', requirement: 50, reward: { score: 240, item: '神秘盲盒' } },
+                { id: 'collect_all_mystery', name: '神秘收藏家', description: '收集所有神秘物品', requirement: 5, reward: { score: 400, item: '神秘盲盒' } },
+                { id: 'use_50_items', name: '物品使用者', description: '使用50个物品', requirement: 50, reward: { score: 160 } },
+                { id: 'use_100_items', name: '物品大师', description: '使用100个物品', requirement: 100, reward: { score: 320, item: '神秘盲盒' } }
+            ],
+            // 全知挑战成就
+            omniscience: [
+                { id: 'omniscient_5', name: '小试牛刀', description: '全知挑战中连续答对5题', requirement: 5, reward: { score: 24 } },
+                { id: 'omniscient_10', name: '答题高手', description: '全知挑战中连续答对10题', requirement: 10, reward: { score: 48 } },
+                { id: 'omniscient_20', name: '答题大师', description: '全知挑战中连续答对20题', requirement: 20, reward: { score: 96 } },
+                { id: 'omniscient_50', name: '答题之神', description: '全知挑战中连续答对50题', requirement: 50, reward: { score: 240 } },
+                { id: 'omniscient', name: '全知者', description: '成功通关全知挑战（连续答对100题）', requirement: 100, reward: { score: 800, item: '神秘盲盒' } }
             ],
             // 综合成就
             comprehensive: [
-                { id: 'all_subject_100', name: '全科达人', description: '所有学科都答对100题', requirement: 100, reward: { score: 800, item: '神秘盲盒' } },
-                { id: 'all_subject_200', name: '全科专家', description: '所有学科都答对200题', requirement: 200, reward: { score: 1200, item: '神秘盲盒' } },
-                { id: 'all_subject_500', name: '知识之神', description: '所有学科都答对500题', requirement: 500, reward: { score: 2000, item: '神秘盲盒' } },
-                { id: 'daily_tasks_30', name: '任务达人', description: '完成30次每日任务', requirement: 30, reward: { score: 300 } },
-                { id: 'daily_tasks_100', name: '任务大师', description: '完成100次每日任务', requirement: 100, reward: { score: 800, item: '神秘盲盒' } },
-                { id: 'title_collector_10', name: '称号收集者', description: '获得10个称号', requirement: 10, reward: { score: 400, item: '神秘盲盒' } },
-                { id: 'title_collector_20', name: '称号大师', description: '获得20个称号', requirement: 20, reward: { score: 800, item: '神秘盲盒' } },
-                { id: 'badge_collector_10', name: '勋章收集者', description: '获得10个勋章', requirement: 10, reward: { score: 400, item: '神秘盲盒' } },
-                { id: 'badge_collector_20', name: '勋章大师', description: '获得20个勋章', requirement: 20, reward: { score: 800, item: '神秘盲盒' } }
+                { id: 'all_subject_100', name: '全科达人', description: '所有学科都答对100题', requirement: 100, reward: { score: 640, item: '神秘盲盒' } },
+                { id: 'all_subject_200', name: '全科专家', description: '所有学科都答对200题', requirement: 200, reward: { score: 960, item: '神秘盲盒' } },
+                { id: 'all_subject_500', name: '知识之神', description: '所有学科都答对500题', requirement: 500, reward: { score: 1600, item: '神秘盲盒' } },
+                { id: 'daily_tasks_30', name: '任务达人', description: '完成30次每日任务', requirement: 30, reward: { score: 240 } },
+                { id: 'daily_tasks_100', name: '任务大师', description: '完成100次每日任务', requirement: 100, reward: { score: 640, item: '神秘盲盒' } },
+                { id: 'title_collector_10', name: '称号收集者', description: '获得10个称号', requirement: 10, reward: { score: 320, item: '神秘盲盒' } },
+                { id: 'title_collector_20', name: '称号大师', description: '获得20个称号', requirement: 20, reward: { score: 640, item: '神秘盲盒' } },
+                { id: 'badge_collector_10', name: '勋章收集者', description: '获得10个勋章', requirement: 10, reward: { score: 320, item: '神秘盲盒' } },
+                { id: 'badge_collector_20', name: '勋章大师', description: '获得20个勋章', requirement: 20, reward: { score: 640, item: '神秘盲盒' } }
             ]
         };
 
@@ -1453,7 +1454,7 @@
             { id: 'badge_warrior', name: '战士', tier: 'rare', score: 30, icon: '⚔️', desc: '在试炼中不断成长', color: '#00f3ff', category: 'general' },
             { id: 'badge_achiever', name: '成就者', tier: 'rare', score: 30, icon: '🏆', desc: '不断挑战自我', color: '#00f3ff', category: 'general' },
             { id: 'badge_legend', name: '传说', tier: 'legendary', score: 200, icon: '👑', desc: '星空森林的传奇', color: '#ffd700', category: 'general' },
-            { id: 'badge_omniscient', name: '全知', tier: 'legendary', score: 200, icon: '💠', desc: '知识的化身', color: '#ffd700', category: 'general' },
+            { id: 'badge_omniscient', name: '全知者', tier: 'legendary', score: 200, icon: '💠', desc: '成功通关全知挑战', color: '#ffd700', category: 'general' },
             
             // 数学勋章
             { id: 'badge_math_beginner', name: '数字雏形', tier: 'common', score: 10, icon: '🔢', desc: '数学世界的初探者', color: '#008f11', category: 'math' },
@@ -1533,16 +1534,59 @@
 
         // 默认题库数据
         const defaultQuestionBank = [
+            // 数学 - 简单
             { id: 1, type: "choice", question: "1+1等于几？", options: ["A. 1", "B. 2", "C. 3", "D. 4"], answer: 1, difficulty: "easy", subject: "math" },
             { id: 2, type: "choice", question: "一年有多少个月？", options: ["A. 10", "B. 12", "C. 24", "D. 6"], answer: 1, difficulty: "easy", subject: "math" },
-            { id: 3, type: "choice", question: "水的化学式是什么？", options: ["A. H2O", "B. CO2", "C. O2", "D. NaCl"], answer: 0, difficulty: "easy", subject: "science" },
-            { id: 4, type: "choice", question: "《静夜思》的作者是谁？", options: ["A. 李白", "B. 杜甫", "C. 白居易", "D. 王维"], answer: 0, difficulty: "normal", subject: "chinese" },
-            { id: 5, type: "choice", question: "三角形内角和是多少度？", options: ["A. 90°", "B. 180°", "C. 270°", "D. 360°"], answer: 1, difficulty: "normal", subject: "math" },
-            { id: 6, type: "choice", question: "地球自转一周的时间是？", options: ["A. 1小时", "B. 1天", "C. 1个月", "D. 1年"], answer: 1, difficulty: "normal", subject: "science" },
-            { id: 7, type: "choice", question: "以下哪个不是质数？", options: ["A. 2", "B. 7", "C. 17", "D. 21"], answer: 3, difficulty: "hard", subject: "math" },
-            { id: 8, type: "choice", question: "光合作用的产物主要是？", options: ["A. 二氧化碳和水", "B. 氧气和有机物", "C. 氮气和水", "D. 氢气和氧气"], answer: 1, difficulty: "hard", subject: "science" },
-            { id: 9, type: "choice", question: "我国第一部纪传体通史是？", options: ["A. 《资治通鉴》", "B. 《史记》", "C. 《汉书》", "D. 《春秋》"], answer: 1, difficulty: "hard", subject: "chinese" },
-            { id: 10, type: "choice", question: "What is the capital of China?", options: ["A. Shanghai", "B. Beijing", "C. Guangzhou", "D. Shenzhen"], answer: 1, difficulty: "easy", subject: "english" }
+            { id: 3, type: "choice", question: "5+3等于几？", options: ["A. 6", "B. 7", "C. 8", "D. 9"], answer: 2, difficulty: "easy", subject: "math" },
+            { id: 4, type: "choice", question: "10-4等于几？", options: ["A. 5", "B. 6", "C. 7", "D. 8"], answer: 1, difficulty: "easy", subject: "math" },
+            { id: 5, type: "choice", question: "3×2等于几？", options: ["A. 4", "B. 5", "C. 6", "D. 7"], answer: 2, difficulty: "easy", subject: "math" },
+            
+            // 数学 - 中等
+            { id: 6, type: "choice", question: "三角形内角和是多少度？", options: ["A. 90°", "B. 180°", "C. 270°", "D. 360°"], answer: 1, difficulty: "normal", subject: "math" },
+            { id: 7, type: "choice", question: "正方形的面积计算公式是？", options: ["A. 边长×边长", "B. 边长×4", "C. 边长×2", "D. 边长÷2"], answer: 0, difficulty: "normal", subject: "math" },
+            { id: 8, type: "choice", question: "圆的周长计算公式是？", options: ["A. πr²", "B. 2πr", "C. πd", "D. 2πd"], answer: 1, difficulty: "normal", subject: "math" },
+            
+            // 数学 - 困难
+            { id: 9, type: "choice", question: "以下哪个不是质数？", options: ["A. 2", "B. 7", "C. 17", "D. 21"], answer: 3, difficulty: "hard", subject: "math" },
+            { id: 10, type: "choice", question: "12的平方根是？", options: ["A. 3", "B. 4", "C. 2√3", "D. 3√2"], answer: 2, difficulty: "hard", subject: "math" },
+            
+            // 科学 - 简单
+            { id: 11, type: "choice", question: "水的化学式是什么？", options: ["A. H2O", "B. CO2", "C. O2", "D. NaCl"], answer: 0, difficulty: "easy", subject: "science" },
+            { id: 12, type: "choice", question: "空气中含量最多的气体是？", options: ["A. 氧气", "B. 氮气", "C. 二氧化碳", "D. 氢气"], answer: 1, difficulty: "easy", subject: "science" },
+            { id: 13, type: "choice", question: "植物进行光合作用的场所是？", options: ["A. 线粒体", "B. 叶绿体", "C. 细胞核", "D. 细胞质"], answer: 1, difficulty: "easy", subject: "science" },
+            
+            // 科学 - 中等
+            { id: 14, type: "choice", question: "地球自转一周的时间是？", options: ["A. 1小时", "B. 1天", "C. 1个月", "D. 1年"], answer: 1, difficulty: "normal", subject: "science" },
+            { id: 15, type: "choice", question: "声音在什么介质中传播最快？", options: ["A. 空气", "B. 水", "C. 固体", "D. 真空"], answer: 2, difficulty: "normal", subject: "science" },
+            
+            // 科学 - 困难
+            { id: 16, type: "choice", question: "光合作用的产物主要是？", options: ["A. 二氧化碳和水", "B. 氧气和有机物", "C. 氮气和水", "D. 氢气和氧气"], answer: 1, difficulty: "hard", subject: "science" },
+            { id: 17, type: "choice", question: "以下哪种是可再生能源？", options: ["A. 煤炭", "B. 石油", "C. 太阳能", "D. 天然气"], answer: 2, difficulty: "hard", subject: "science" },
+            
+            // 语文 - 简单
+            { id: 18, type: "choice", question: "《静夜思》的作者是谁？", options: ["A. 李白", "B. 杜甫", "C. 白居易", "D. 王维"], answer: 0, difficulty: "normal", subject: "chinese" },
+            { id: 19, type: "choice", question: "以下哪个是唐代诗人？", options: ["A. 苏轼", "B. 李白", "C. 李清照", "D. 曹雪芹"], answer: 1, difficulty: "easy", subject: "chinese" },
+            
+            // 语文 - 中等
+            { id: 20, type: "choice", question: "《红楼梦》的作者是谁？", options: ["A. 罗贯中", "B. 施耐庵", "C. 曹雪芹", "D. 吴承恩"], answer: 2, difficulty: "normal", subject: "chinese" },
+            { id: 21, type: "choice", question: "以下哪个是中国四大名著？", options: ["A. 《聊斋志异》", "B. 《金瓶梅》", "C. 《西游记》", "D. 《儒林外史》"], answer: 2, difficulty: "normal", subject: "chinese" },
+            
+            // 语文 - 困难
+            { id: 22, type: "choice", question: "我国第一部纪传体通史是？", options: ["A. 《资治通鉴》", "B. 《史记》", "C. 《汉书》", "D. 《春秋》"], answer: 1, difficulty: "hard", subject: "chinese" },
+            { id: 23, type: "choice", question: "\"床前明月光\"的下一句是？", options: ["A. 疑是地上霜", "B. 举头望明月", "C. 低头思故乡", "D. 明月几时有"], answer: 0, difficulty: "hard", subject: "chinese" },
+            
+            // 英语 - 简单
+            { id: 24, type: "choice", question: "What is the capital of China?", options: ["A. Shanghai", "B. Beijing", "C. Guangzhou", "D. Shenzhen"], answer: 1, difficulty: "easy", subject: "english" },
+            { id: 25, type: "choice", question: "How many days are there in a week?", options: ["A. 5", "B. 6", "C. 7", "D. 8"], answer: 2, difficulty: "easy", subject: "english" },
+            { id: 26, type: "choice", question: "What color is the sky?", options: ["A. Red", "B. Blue", "C. Green", "D. Yellow"], answer: 1, difficulty: "easy", subject: "english" },
+            
+            // 英语 - 中等
+            { id: 27, type: "choice", question: "What do you do on weekends?", options: ["A. I go to school", "B. I watch TV", "C. I do homework", "D. I have class"], answer: 1, difficulty: "normal", subject: "english" },
+            { id: 28, type: "choice", question: "How old are you?", options: ["A. I am fine", "B. I am happy", "C. I am 10 years old", "D. I am a student"], answer: 2, difficulty: "normal", subject: "english" },
+            
+            // 英语 - 困难
+            { id: 29, type: "choice", question: "What is the past tense of 'go'?", options: ["A. Gone", "B. Went", "C. Goes", "D. Going"], answer: 1, difficulty: "hard", subject: "english" },
+            { id: 30, type: "choice", question: "Which one is a fruit?", options: ["A. Carrot", "B. Potato", "C. Apple", "D. Tomato"], answer: 2, difficulty: "hard", subject: "english" }
         ];
 
         // 初始化题库（在线模式优先从服务器加载，离线模式从本地存储或默认加载）
@@ -1861,7 +1905,7 @@
             t.innerText = msg; t.classList.add("show");
             setTimeout(() => t.classList.remove("show"), 2500);
         }
-        function getTodayStr() { const d = new Date(); return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+        function getTodayStr() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
 
         // ========== 宠物工具函数 ==========
         function getPetRarity(species) {
@@ -2249,6 +2293,7 @@
                 closeLoginModal();
                 await loadStudentData(profile.id);
                 setupRealtimeSubscription();
+                loadQuestionBankFromServer(); // 加载题库数据
                 document.getElementById("startScreen").style.opacity = "0";
                 setTimeout(() => {
                     document.getElementById("startScreen").style.display = "none";
@@ -2688,8 +2733,8 @@
                 }
             });
             
-            // 检查连续答对题目成就
-            achievements.correctStreak.forEach(achievement => {
+            // 检查全知挑战成就
+            achievements.omniscience.forEach(achievement => {
                 if (!unlocked.includes(achievement.id) && progress.maxCorrectStreak >= achievement.requirement) {
                     unlockAchievement(achievement);
                 }
@@ -3766,22 +3811,25 @@
         function getOmniscienceQuestion() {
             if (!currentOmniscienceChallenge || !currentOmniscienceChallenge.active) return;
             
+            // 检查是否达到100题通关条件
+            if (currentOmniscienceChallenge.correctStreak >= 100) {
+                endOmniscienceChallenge(true, true); // 第二个参数表示通关
+                return;
+            }
+            
             // 根据连对次数调整题目难度
             let difficulty = 'easy';
             if (currentOmniscienceChallenge.correctStreak >= 5) difficulty = 'normal';
             if (currentOmniscienceChallenge.correctStreak >= 10) difficulty = 'hard';
             
-            // 筛选符合条件的题目
+            // 筛选符合条件的题目（允许重复）
             let availableQuestions = window.questionBank.filter(q => 
-                q.difficulty === difficulty && 
-                !currentOmniscienceChallenge.usedQuestionIds.includes(q.id)
+                q.difficulty === difficulty
             );
             
             // 如果该难度没有题目，使用其他难度
             if (availableQuestions.length === 0) {
-                availableQuestions = window.questionBank.filter(q => 
-                    !currentOmniscienceChallenge.usedQuestionIds.includes(q.id)
-                );
+                availableQuestions = window.questionBank;
             }
             
             if (availableQuestions.length === 0) {
@@ -3792,7 +3840,6 @@
             // 随机选择题目
             let randomIndex = Math.floor(Math.random() * availableQuestions.length);
             currentOmniscienceChallenge.currentQuestion = availableQuestions[randomIndex];
-            currentOmniscienceChallenge.usedQuestionIds.push(currentOmniscienceChallenge.currentQuestion.id);
             
             // 渲染题目
             renderOmniscienceQuestion();
@@ -3907,7 +3954,7 @@
             }
         }
         
-        function endOmniscienceChallenge(isEmptyBank) {
+        function endOmniscienceChallenge(isEmptyBank, isCompletion) {
             if (!currentOmniscienceChallenge) return;
             
             clearInterval(currentOmniscienceChallenge.timer);
@@ -3939,6 +3986,9 @@
                         type: "shop",
                         itemData: {
                             name: randomItem,
+                            type: randomItem === "魔法曲奇" ? "hunger" : randomItem === "星空铃铛" ? "mood" : "clean",
+                            value: 20,
+                            growth: 5,
                             effect: randomItem === "魔法曲奇" ? "饱食+20" : randomItem === "星空铃铛" ? "心情+20" : "干净+20"
                         }
                     });
@@ -3990,6 +4040,20 @@
                     rewardMessage = `🎉 挑战结束！连对 ${streak} 题，获得 ⭐阳光+${totalScore}${rewardMessage}`;
                 } else {
                     rewardMessage = `🎉 挑战结束！连对 ${streak} 题${rewardMessage}`;
+                }
+            }
+            
+            // 处理通关逻辑
+            if (isCompletion && streak >= 100) {
+                rewardMessage = `🏆 恭喜！你成功通关全知挑战！连对 ${streak} 题！\n\n获得：全知者成就和全知者勋章！`;
+                
+                // 解锁全知者成就
+                if (!currentStudent.achievements.unlocked.includes('omniscient')) {
+                    currentStudent.achievements.unlocked.push('omniscient');
+                    // 解锁全知者勋章
+                    if (!currentStudent.badges.unlocked.includes('badge_omniscient')) {
+                        currentStudent.badges.unlocked.push('badge_omniscient');
+                    }
                 }
             }
             
