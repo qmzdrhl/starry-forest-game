@@ -876,7 +876,7 @@
             <div class="battle-timer" id="battleTimer">答题时间：15秒</div>
             <div class="battle-field">
                 <div class="battle-unit">
-                    <div class="battle-avatar" id="playerAvatar"><img src="pets/default_pet.png" style="width:160px; height:160px; object-fit:contain;" alt="宠物" onerror="this.onerror=null; this.outerHTML='🐶';"></div>
+                    <div class="battle-avatar" id="playerAvatar">🐶</div>
                     <div class="battle-hp-bar">
                         <div class="battle-hp-fill" id="playerHpFill"></div>
                     </div>
@@ -1501,7 +1501,7 @@
                 enemyHp: 80,
                 playerAtk: 20,
                 enemyAtk: 15,
-                enemyAvatar: `<img src="pets/boss_easy.png" style="width:160px; height:160px; object-fit:contain;" alt="初级守护者" onerror="this.onerror=null; this.outerHTML='👾';">`,
+                enemyAvatar: "👾",
                 enemyName: "初级守护者",
                 reward: { score: 15, mood: 20, items: ["魔法曲奇", "星空铃铛", "清泉沐浴"], blindBoxChance: 0 },
                 punish: { growth: 5, mood: 15 }
@@ -1513,7 +1513,7 @@
                 enemyHp: 150,
                 playerAtk: 25,
                 enemyAtk: 25,
-                enemyAvatar: `<img src="pets/boss_normal.png" style="width:160px; height:160px; object-fit:contain;" alt="进阶守护者" onerror="this.onerror=null; this.outerHTML='👿';">`,
+                enemyAvatar: "👿",
                 enemyName: "进阶守护者",
                 reward: { score: 30, mood: 30, items: ["精灵盛宴", "幻境游乐票", "星光洗礼"], blindBoxChance: 0.3 },
                 punish: { growth: 15, mood: 25 }
@@ -1525,7 +1525,7 @@
                 enemyHp: 250,
                 playerAtk: 30,
                 enemyAtk: 35,
-                enemyAvatar: `<img src="pets/boss_hard.png" style="width:160px; height:160px; object-fit:contain;" alt="大师守护者" onerror="this.onerror=null; this.outerHTML='👹';">`,
+                enemyAvatar: "👹",
                 enemyName: "大师守护者",
                 reward: { score: 60, mood: 50, items: [], blindBoxChance: 1 },
                 punish: { growth: 30, mood: 40 }
@@ -2028,6 +2028,8 @@
                 existingIdx = inventory.findIndex(i => i.type === 'blindbox');
             } else if(item.type === 'mystery') {
                 existingIdx = inventory.findIndex(i => i.type === 'mystery' && i.name === item.name);
+            } else if(item.type === 'rare') {
+                existingIdx = inventory.findIndex(i => i.type === 'rare' && i.name === item.name);
             }
             const addCount = item.count || 1;
             if(existingIdx !== -1) {
@@ -4187,6 +4189,14 @@
                 alert(`✨ 开启盲盒，获得：${drop.name}！`);
             } else if(currentStudent.pets.length > 0) {
                 let pet = currentStudent.pets[currentPetIndex];
+                // 确保宠物属性存在且为数字
+                pet.growth = Number(pet.growth) || 0;
+                pet.rankGrowth = Number(pet.rankGrowth) || 0;
+                pet.hunger = Number(pet.hunger) || 0;
+                pet.mood = Number(pet.mood) || 0;
+                pet.clean = Number(pet.clean) || 0;
+                pet.mutationCount = Number(pet.mutationCount) || 0;
+                
                 let growthBefore = pet.growth;
                 let rankGrowthBefore = pet.rankGrowth;
                 let stageBefore = getPetStageLevel(growthBefore);
@@ -4194,7 +4204,8 @@
                 let willEvolve = false;
                 let nextStage = stageBefore;
                 if (item.type === 'mystery' || item.type === 'shop') {
-                    let testGrowth = growthBefore + (item.type === 'mystery' ? item.growthVal : item.itemData.growth) * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
+                    let growthValue = item.type === 'mystery' ? (item.growthVal || 0) : (item.itemData?.growth || 0);
+                    let testGrowth = growthBefore + growthValue * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
                     nextStage = getPetStageLevel(testGrowth);
                     willEvolve = nextStage > stageBefore;
                 }
@@ -4208,7 +4219,7 @@
                     // 处理商店道具和直接类型的道具
                     const itemData = item.itemData || item;
                     if (itemData.type && itemData.value) {
-                        pet[itemData.type] = Math.min(100, pet[itemData.type] + itemData.value);
+                        pet[itemData.type] = Math.min(100, (pet[itemData.type] || 0) + itemData.value);
                     }
                     let actualGrowth = (itemData.growth || 0) * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
                     pet.growth += actualGrowth;
@@ -4219,9 +4230,9 @@
                     pet.growth += actualGrowth;
                     pet.rankGrowth += actualGrowth;
                     // 同时提升所有属性
-                    pet.hunger = Math.min(100, pet.hunger + 30);
-                    pet.mood = Math.min(100, pet.mood + 30);
-                    pet.clean = Math.min(100, pet.clean + 30);
+                    pet.hunger = Math.min(100, (pet.hunger || 0) + 30);
+                    pet.mood = Math.min(100, (pet.mood || 0) + 30);
+                    pet.clean = Math.min(100, (pet.clean || 0) + 30);
                 } else { 
                     let actualGrowth = (item.growthVal || 0) * (pet.growthMod || 1) * getGrowthMultiplier(pet.species);
                     pet.growth += actualGrowth;
