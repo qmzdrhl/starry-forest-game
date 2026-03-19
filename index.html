@@ -448,7 +448,7 @@
             width: 40%;
         }
         .battle-avatar {
-            font-size: 100px;
+            font-size: 200px;
             margin-bottom: 15px;
             transition: all 0.2s;
         }
@@ -876,7 +876,7 @@
             <div class="battle-timer" id="battleTimer">答题时间：15秒</div>
             <div class="battle-field">
                 <div class="battle-unit">
-                    <div class="battle-avatar" id="playerAvatar"><img src="pets/default_pet.png" style="width:80px; height:80px; object-fit:contain;" alt="宠物" onerror="this.onerror=null; this.outerHTML='🐶';"></div>
+                    <div class="battle-avatar" id="playerAvatar"><img src="pets/default_pet.png" style="width:160px; height:160px; object-fit:contain;" alt="宠物" onerror="this.onerror=null; this.outerHTML='🐶';"></div>
                     <div class="battle-hp-bar">
                         <div class="battle-hp-fill" id="playerHpFill"></div>
                     </div>
@@ -1501,7 +1501,7 @@
                 enemyHp: 80,
                 playerAtk: 20,
                 enemyAtk: 15,
-                enemyAvatar: `<img src="pets/boss_easy.png" style="width:80px; height:80px; object-fit:contain;" alt="初级守护者" onerror="this.onerror=null; this.outerHTML='👾';">`,
+                enemyAvatar: `<img src="pets/boss_easy.png" style="width:160px; height:160px; object-fit:contain;" alt="初级守护者" onerror="this.onerror=null; this.outerHTML='👾';">`,
                 enemyName: "初级守护者",
                 reward: { score: 15, mood: 20, items: ["魔法曲奇", "星空铃铛", "清泉沐浴"], blindBoxChance: 0 },
                 punish: { growth: 5, mood: 15 }
@@ -1513,7 +1513,7 @@
                 enemyHp: 150,
                 playerAtk: 25,
                 enemyAtk: 25,
-                enemyAvatar: `<img src="pets/boss_normal.png" style="width:80px; height:80px; object-fit:contain;" alt="进阶守护者" onerror="this.onerror=null; this.outerHTML='👿';">`,
+                enemyAvatar: `<img src="pets/boss_normal.png" style="width:160px; height:160px; object-fit:contain;" alt="进阶守护者" onerror="this.onerror=null; this.outerHTML='👿';">`,
                 enemyName: "进阶守护者",
                 reward: { score: 30, mood: 30, items: ["精灵盛宴", "幻境游乐票", "星光洗礼"], blindBoxChance: 0.3 },
                 punish: { growth: 15, mood: 25 }
@@ -1525,7 +1525,7 @@
                 enemyHp: 250,
                 playerAtk: 30,
                 enemyAtk: 35,
-                enemyAvatar: `<img src="pets/boss_hard.png" style="width:80px; height:80px; object-fit:contain;" alt="大师守护者" onerror="this.onerror=null; this.outerHTML='👹';">`,
+                enemyAvatar: `<img src="pets/boss_hard.png" style="width:160px; height:160px; object-fit:contain;" alt="大师守护者" onerror="this.onerror=null; this.outerHTML='👹';">`,
                 enemyName: "大师守护者",
                 reward: { score: 60, mood: 50, items: [], blindBoxChance: 1 },
                 punish: { growth: 30, mood: 40 }
@@ -1905,7 +1905,31 @@
             t.innerText = msg; t.classList.add("show");
             setTimeout(() => t.classList.remove("show"), 2500);
         }
-        function getTodayStr() { const d = new Date(); return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+        function getTodayStr() {
+            const d = new Date();
+            return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+        }
+        
+        function resetExpiredBattleCount(battleCount) {
+            const today = getTodayStr();
+            const newBattleCount = {};
+            // 只保留今天的对战次数，删除所有过期的记录
+            if (battleCount[today] !== undefined) {
+                newBattleCount[today] = battleCount[today];
+            }
+            return newBattleCount;
+        }
+        
+        function cleanOmniscienceHistory(history) {
+            const today = new Date();
+            const threeDaysAgo = new Date(today.getTime() - 3 * 24 * 60 * 60 * 1000);
+            
+            // 只保留最近3天内的记录
+            return history.filter(dateStr => {
+                const date = new Date(dateStr);
+                return date >= threeDaysAgo;
+            });
+        }
 
         // ========== 宠物工具函数 ==========
         function getPetRarity(species) {
@@ -2200,6 +2224,8 @@
                         pets: data.pets || [],
                         inventory: data.inventory || [],
                         dailyTasks: data.dailytasks || { date: getTodayStr(), completed: [] },
+                        dailyBattleCount: resetExpiredBattleCount(data.dailybattlecount || {}),
+                        omniscienceChallengeHistory: cleanOmniscienceHistory(data.omnisciencechallengehistory || []),
                         mainIndex: data.mainindex || 0,
                         password: prof.password,
                         failed_attempts: prof.failed_attempts,
@@ -2411,8 +2437,8 @@
                         pets: data.pets || [],
                         inventory: data.inventory || [],
                         dailyTasks: data.dailytasks || { date: getTodayStr(), completed: [] },
-                        dailyBattleCount: data.dailybattlecount || {},
-                        omniscienceChallengeHistory: data.omnisciencechallengehistory || [],
+                        dailyBattleCount: resetExpiredBattleCount(data.dailybattlecount || {}),
+                        omniscienceChallengeHistory: cleanOmniscienceHistory(data.omnisciencechallengehistory || []),
                         mainIndex: data.mainindex || 0,
                         // 成就相关字段
                         achievements: data.achievements || {
@@ -3156,7 +3182,7 @@
             
             let tabs = `<div class="pet-tabs-container" style="position:absolute; top:20px; left:20px; display:flex; gap:12px; z-index:10;">`;
             currentStudent.pets.forEach((pet, idx) => {
-                tabs += `<div class="pet-tab" style="width:50px; height:50px; background:rgba(0,0,0,0.4); border-radius:15px; display:flex; justify-content:center; align-items:center; font-size:26px; cursor:pointer; border:2px solid ${idx===currentPetIndex?'var(--gold-glow)':'transparent'}; transition: all 0.3s;" onclick="changePet(${idx})"><img src="${getPetIcon(pet)}" style="width:30px; height:30px; object-fit:contain;" alt="${pet.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[pet.species]?.[0] || '🐶'}';"></div>`;
+                tabs += `<div class="pet-tab" style="width:80px; height:80px; background:rgba(0,0,0,0.4); border-radius:20px; display:flex; justify-content:center; align-items:center; font-size:40px; cursor:pointer; border:2px solid ${idx===currentPetIndex?'var(--gold-glow)':'transparent'}; transition: all 0.3s;" onclick="changePet(${idx})"><img src="${getPetIcon(pet)}" style="width:60px; height:60px; object-fit:contain;" alt="${pet.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[pet.species]?.[0] || '🐶'}';"></div>`;
             });
             tabs += `</div>`;
 
@@ -3175,7 +3201,7 @@
             stage.innerHTML = tabs + `
                 <div class="magic-circle"></div>
                 <div class="pet-stage-aura" style="background:radial-gradient(circle, ${speciesColor} 0%, transparent 70%);"></div>
-                <div class="petIcon" style="font-size:120px; margin-top:40px; transition: transform 0.5s;"><img src="${getPetIcon(p)}" style="width:120px; height:120px; object-fit:contain;" alt="${p.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[p.species]?.[0] || '🐶'}';"></div>
+                <div class="petIcon" style="font-size:240px; margin-top:40px; transition: transform 0.5s;"><img src="${getPetIcon(p)}" style="width:240px; height:240px; object-fit:contain;" alt="${p.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[p.species]?.[0] || '🐶'}';"></div>
                 <div style="margin-top:20px; text-align:center; z-index:2;">
                     <div style="font-size:32px; font-weight:900; color:var(--text-main); margin-bottom:5px; text-shadow:0 0 20px rgba(255,255,255,0.3);">
                         ${p.name}
@@ -3478,8 +3504,8 @@
                 timeLeft: 15
             };
 
-            document.getElementById("playerAvatar").innerHTML = `<img src="${getPetIcon(mainPet)}" style="width:80px; height:80px; object-fit:contain;" alt="${mainPet.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[mainPet.species]?.[0] || '🐶'}';">`;
-            document.getElementById("enemyAvatar").innerText = config.enemyAvatar;
+            document.getElementById("playerAvatar").innerHTML = `<img src="${getPetIcon(mainPet)}" style="width:160px; height:160px; object-fit:contain;" alt="${mainPet.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[mainPet.species]?.[0] || '🐶'}';">`;
+            document.getElementById("enemyAvatar").innerHTML = config.enemyAvatar;
             document.getElementById("enemyName").innerText = config.enemyName;
             updateBattleHp();
             document.getElementById("battleModal").classList.add("active");
@@ -6249,7 +6275,7 @@
         }
         
         // 重写 syncStudentData 函数，添加数据验证
-        async function syncStudentData(student) {
+        async function syncStudentData(student, retryCount = 0) {
             if (!validateStudentData(student)) {
                 console.error('学生数据验证失败，无法同步');
                 logError(new Error('学生数据验证失败'), 'syncStudentData');
@@ -6298,22 +6324,44 @@
                 console.log('准备同步数据:', {
                     studentId: student.id,
                     studentName: student.name,
-                    dataSize: JSON.stringify(studentData).length
+                    dataSize: JSON.stringify(studentData).length,
+                    retryCount: retryCount
+                });
+                
+                // 设置请求超时
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('请求超时')), 10000); // 10秒超时
                 });
                 
                 // 执行数据同步 - 使用正确的 upsert 语法，指定 user_id 作为冲突字段
-                const { data, error } = await supabaseClient
-                    .from('student_data')
-                    .upsert(studentData, { onConflict: 'user_id' })
-                    .select();
+                const { data, error } = await Promise.race([
+                    supabaseClient
+                        .from('student_data')
+                        .upsert(studentData, { onConflict: 'user_id' })
+                        .select(),
+                    timeoutPromise
+                ]);
                 
                 if (error) {
                     console.error('同步数据失败:', {
                         error: error,
                         errorMessage: error.message,
                         errorDetails: error.details,
-                        studentId: student.id
+                        studentId: student.id,
+                        retryCount: retryCount
                     });
+                    
+                    // 检查是否是网络错误且未达到最大重试次数
+                    if ((error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_CLOSED') || error.message.includes('请求超时')) && retryCount < 3) {
+                        console.log('网络错误，正在重试...', {
+                            studentId: student.id,
+                            retryCount: retryCount + 1
+                        });
+                        // 等待一段时间后重试
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        return syncStudentData(student, retryCount + 1);
+                    }
+                    
                     logError(error, 'syncStudentData - upsert');
                     return false;
                 }
@@ -6321,15 +6369,29 @@
                 console.log('数据同步成功:', {
                     studentId: student.id,
                     studentName: student.name,
-                    result: data
+                    result: data,
+                    retryCount: retryCount
                 });
                 return true;
             } catch (error) {
                 console.error('同步过程中发生错误:', {
                     error: error,
                     errorMessage: error.message,
-                    studentId: student.id
+                    studentId: student.id,
+                    retryCount: retryCount
                 });
+                
+                // 检查是否是网络错误且未达到最大重试次数
+                if ((error.message.includes('Failed to fetch') || error.message.includes('ERR_CONNECTION_CLOSED') || error.message.includes('请求超时')) && retryCount < 3) {
+                    console.log('网络错误，正在重试...', {
+                        studentId: student.id,
+                        retryCount: retryCount + 1
+                    });
+                    // 等待一段时间后重试
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    return syncStudentData(student, retryCount + 1);
+                }
+                
                 logError(error, 'syncStudentData - catch');
                 return false;
             }
