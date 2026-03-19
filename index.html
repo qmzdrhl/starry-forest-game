@@ -1982,6 +1982,25 @@
             const stage = getPetStageLevel(pet.growth);
             return `pets/${pet.species}_stage${stage + 1}.png`;
         }
+        
+        // 根据称号 ID 获取称号颜色
+        function getTitleColor(titleId) {
+            // 遍历所有称号类别
+            for (const category in titles) {
+                if (Array.isArray(titles[category])) {
+                    // 通用、隐藏和特殊称号
+                    const title = titles[category].find(t => t.id === titleId);
+                    if (title) return title.color;
+                } else if (typeof titles[category] === 'object') {
+                    // 学科称号
+                    for (const subCategory in titles[category]) {
+                        const title = titles[category][subCategory].find(t => t.id === titleId);
+                        if (title) return title.color;
+                    }
+                }
+            }
+            return '#94a3b8'; // 默认颜色
+        }
         function getRandomSpecies(ownedSpecies, excludeNormal = false) {
             let roll = Math.random();
             if (excludeNormal) {
@@ -2664,10 +2683,35 @@
             grid.innerHTML = "";
             students.forEach((s, i) => {
                 let mainPet = (s.pets && s.pets.length > 0) ? s.pets[s.mainIndex || 0] : null;
+                // 获取学生激活的称号
+                const activeTitle = s.titles?.active;
+                // 获取称号颜色
+                const titleColor = activeTitle ? getTitleColor(activeTitle) : '#94a3b8';
+                // 获取称号名称
+                let titleName = activeTitle;
+                // 遍历所有称号类别，找到对应的称号名称
+                for (const category in titles) {
+                    if (Array.isArray(titles[category])) {
+                        const title = titles[category].find(t => t.id === activeTitle);
+                        if (title) {
+                            titleName = title.name;
+                            break;
+                        }
+                    } else if (typeof titles[category] === 'object') {
+                        for (const subCategory in titles[category]) {
+                            const title = titles[category][subCategory].find(t => t.id === activeTitle);
+                            if (title) {
+                                titleName = title.name;
+                                break;
+                            }
+                        }
+                    }
+                }
                 grid.innerHTML += `
                     <div class="glass-card" onclick="enterRoom(${i})">
                         <div class="petIcon">${mainPet ? `<img src="${getPetIcon(mainPet)}" style="width:120px; height:120px; object-fit:contain;" alt="${mainPet.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[mainPet.species]?.[0] || '🐶'}';">` : '🥚'}</div>
                         <div style="font-weight:900; font-size:22px; color:var(--text-main); margin-bottom:5px;">${s.name}</div>
+                        ${activeTitle ? `<div style="font-size:12px; color:${titleColor}; margin-bottom:10px; letter-spacing:1px;">${titleName}</div>` : ''}
                         <div style="font-size:14px; color:var(--text-sub); margin-bottom:15px; letter-spacing:1px;">魔力成长: ${mainPet ? Math.floor(mainPet.rankGrowth) : 0}</div>
                         <div style="color:var(--gold-glow); font-weight:800; background:rgba(251, 191, 36, 0.1); padding:8px 20px; border-radius:20px; display:inline-block; border:1px solid rgba(251,191,36,0.3);">⭐ ${s.score}</div>
                     </div>
@@ -4296,6 +4340,8 @@
                         toast(`使用了 ${item.name}`);
                     }
                 }
+                // 使用道具后更新宠物状态
+                checkPetStatus(pet);
             }
             save(); updateRoom();
         }
@@ -4973,11 +5019,39 @@
             let html = "";
             sorted.forEach((s, idx) => {
                 let p = s.pets[s.mainIndex||0];
+                // 获取学生激活的称号
+                const activeTitle = s.titles?.active;
+                // 获取称号颜色
+                const titleColor = activeTitle ? getTitleColor(activeTitle) : '#94a3b8';
+                // 获取称号名称
+                let titleName = activeTitle;
+                // 遍历所有称号类别，找到对应的称号名称
+                for (const category in titles) {
+                    if (Array.isArray(titles[category])) {
+                        const title = titles[category].find(t => t.id === activeTitle);
+                        if (title) {
+                            titleName = title.name;
+                            break;
+                        }
+                    } else if (typeof titles[category] === 'object') {
+                        for (const subCategory in titles[category]) {
+                            const title = titles[category][subCategory].find(t => t.id === activeTitle);
+                            if (title) {
+                                titleName = title.name;
+                                break;
+                            }
+                        }
+                    }
+                }
                 html += `
                     <div style="display:flex; align-items:center; background:rgba(255,255,255,0.03); padding:20px; border-radius:24px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.05); transition: all 0.3s;">
                         <div style="font-size:24px; font-weight:900; width:50px; color:var(--gold-glow);">${idx+1}</div>
                         <div style="font-size:40px; margin-right:20px;">${p?`<img src="${getPetIcon(p)}" style="width:40px; height:40px; object-fit:contain;" alt="${p.species}" onerror="this.onerror=null; this.outerHTML='${petEvolutionMap[p.species]?.[0] || '🐶'}';">`:'🥚'}</div>
-                        <div style="flex:1;"><div style="font-weight:bold; font-size:18px;">${s.name}</div><div style="font-size:12px; color:var(--text-sub);">${p?p.name:'尚未契约'}</div></div>
+                        <div style="flex:1;">
+                            <div style="font-weight:bold; font-size:18px;">${s.name}</div>
+                            ${activeTitle ? `<div style="font-size:12px; color:${titleColor};">${titleName}</div>` : ''}
+                            <div style="font-size:12px; color:var(--text-sub);">${p?p.name:'尚未契约'}</div>
+                        </div>
                         <div style="text-align:right;"><div style="font-size:12px; color:var(--text-sub);">魔力</div><div style="font-size:24px; font-weight:900; color:var(--cyan-glow);">${p?Math.floor(p.rankGrowth):0}</div></div>
                     </div>
                 `;
