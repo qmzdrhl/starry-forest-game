@@ -234,6 +234,58 @@
         .magic-circle::after { width: 100px; height: 100px; animation: circleSpin 10s linear infinite; }
         
         @keyframes circleSpin { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes planarSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes magicSpin { 
+            0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+            100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
+        }
+        @keyframes breathe { 
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        
+        @keyframes firefly { 
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            25% { opacity: 0.8; transform: scale(1.2); }
+            50% { opacity: 0.6; transform: scale(1); }
+            75% { opacity: 1; transform: scale(1.3); }
+        }
+        
+        /* 动画状态类 */
+        .circle-initial {
+            animation: planarSpin 8s linear infinite;
+        }
+        .circle-initial-reverse {
+            animation: planarSpin 12s linear infinite reverse;
+        }
+        .circle-initial-slow {
+            animation: planarSpin 16s linear infinite;
+        }
+        
+        .circle-magic {
+            animation: magicSpin 3s linear infinite;
+        }
+        .circle-magic-reverse {
+            animation: magicSpin 4s linear infinite reverse;
+        }
+        .circle-magic-slow {
+            animation: magicSpin 5s linear infinite;
+        }
+        
+        .circle-result {
+            animation: planarSpin 8s linear infinite;
+        }
+        .circle-result-reverse {
+            animation: planarSpin 12s linear infinite reverse;
+        }
+        .circle-result-slow {
+            animation: planarSpin 16s linear infinite;
+        }
+        
+        .circle-container-breathe {
+            animation: breathe 2s ease-in-out infinite;
+        }
 
         .pet-stage-aura {
             position: absolute; top: 100px; width: 220px; height: 220px;
@@ -717,31 +769,58 @@
             
             <div style="background:rgba(0,0,0,0.3); padding:20px; border-radius:20px; margin-bottom:20px;">
                 <h3 style="font-size:16px; margin-bottom:15px; color:var(--text-sub);">全局神力干预</h3>
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:15px;">
-                    <button class="btn btn-cyan" onclick="gmBatchScore(20)">✨ 全局发20阳光</button>
-                    <button class="btn btn-danger" onclick="gmBatchScore(-20)">🔥 全局扣20阳光</button>
-                    <button class="btn btn-purple" onclick="gmGiveBlindBoxAll()">🎁 全局赐盲盒</button>
-                    <button class="btn btn-gold" onclick="gmCompleteAllDailyTasks()">📋 一键完成每日任务</button>
-                </div>
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:15px;">
-                    <button class="btn btn-cyan" onclick="manualBackup()">🔒 手动备份</button>
-                    <button class="btn btn-purple" onclick="restoreBackup()">📤 恢复备份</button>
-                    <button class="btn btn-gold" onclick="viewBackups()">💾 备份管理</button>
-                    <button class="btn btn-red" onclick="viewErrorLogs()">📋 错误日志</button>
-                    <button class="btn btn-purple" onclick="showCreateClassModal()">🏫 创建新班级</button>
-                </div>
-                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top:15px; margin-bottom:15px;">
-                    <button class="btn btn-purple" style="width:100%;" onclick="toggleQuestionBank(true)">📚 精灵试炼 · 题库管理</button>
-                </div>
-                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top:15px;">
-                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                        <button class="btn btn-cyan" style="flex:1; min-width:150px;" onclick="showTeacherTitleWall()">🏆 称号墙</button>
-                        <button class="btn btn-gold" style="flex:1; min-width:150px;" onclick="showTeacherBadgeWall()">🎖️ 勋章墙</button>
-                        <button class="btn btn-purple" style="flex:1; min-width:150px;" onclick="showTeacherAchievementWall()">🌟 成就墙</button>
+                
+                <!-- 学生管理操作 -->
+                <div style="margin-bottom:20px;">
+                    <h4 style="font-size:14px; margin-bottom:10px; color:var(--text-sub);">学生管理</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+                        <button class="btn btn-cyan" onclick="gmBatchScore(20)">✨ 全局发20阳光</button>
+                        <button class="btn btn-danger" onclick="gmBatchScore(-20)">🔥 全局扣20阳光</button>
+                        <button class="btn btn-purple" onclick="gmGiveBlindBoxAll()">🎁 全局赐盲盒</button>
+                        <button class="btn btn-gold" onclick="gmCompleteAllDailyTasks()">📋 一键完成每日任务</button>
                     </div>
                 </div>
-                <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top:15px; margin-top:15px;">
-                     <button class="btn btn-warning" onclick="resetClassData()">🔥 重置结界 (清空所有数据)</button>
+                
+                <!-- 数据管理操作 -->
+                <div style="margin-bottom:20px;">
+                    <h4 style="font-size:14px; margin-bottom:10px; color:var(--text-sub);">数据管理</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+                        <button class="btn btn-cyan" onclick="manualBackup()">🔒 手动备份</button>
+                        <button class="btn btn-purple" onclick="restoreBackup()">📤 恢复备份</button>
+                        <button class="btn btn-gold" onclick="viewBackups()">💾 备份管理</button>
+                        <button class="btn btn-red" onclick="viewErrorLogs()">📋 错误日志</button>
+                        <button class="btn btn-purple" onclick="showCreateClassModal()">🏫 创建新班级</button>
+                    </div>
+                </div>
+                
+                <!-- 工具功能 -->
+                <div style="margin-bottom:20px;">
+                    <h4 style="font-size:14px; margin-bottom:10px; color:var(--text-sub);">工具功能</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+                        <button class="btn btn-cyan" onclick="showDrawModal()">✨ 点亮法阵</button>
+                        <button class="btn btn-purple" onclick="showStatisticsModal()">📊 数据统计与分析</button>
+                    </div>
+                </div>
+                
+                <!-- 内容管理 -->
+                <div style="margin-bottom:20px;">
+                    <h4 style="font-size:14px; margin-bottom:10px; color:var(--text-sub);">内容管理</h4>
+                    <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+                        <button class="btn btn-purple" style="width:100%;" onclick="toggleQuestionBank(true)">📚 精灵试炼 · 题库管理</button>
+                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+                            <button class="btn btn-cyan" onclick="showTeacherTitleWall()">🏆 称号墙</button>
+                            <button class="btn btn-gold" onclick="showTeacherBadgeWall()">🎖️ 勋章墙</button>
+                            <button class="btn btn-purple" onclick="showTeacherAchievementWall()">🌟 成就墙</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 危险操作 -->
+                <div style="margin-top:20px;">
+                    <h4 style="font-size:14px; margin-bottom:10px; color:var(--text-sub);">危险操作</h4>
+                    <div style="display:grid; grid-template-columns: 1fr; gap:10px;">
+                        <button class="btn btn-warning" onclick="resetClassData()">🔥 重置结界 (清空所有数据)</button>
+                    </div>
                 </div>
             </div>
 
@@ -904,6 +983,142 @@
     </div>
 
     <div id="toast" class="toast"></div>
+
+    <!-- 抽签模态框 -->
+    <div class="modal" id="drawModal">
+        <div class="modal-content" style="position:relative; overflow:hidden;">
+            <!-- 星光和萤火效果 -->
+            <div id="starfield" style="position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1;"></div>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; position:relative; z-index:2;">
+                <h2 style="color:var(--cyan-glow);">✨ 点亮法阵</h2>
+                <button class="btn btn-small" onclick="closeDrawModal()">关闭 ✖</button>
+            </div>
+            
+            <div style="text-align:center; margin:40px 0; display:flex; flex-direction:column; align-items:center; justify-content:center; position:relative; z-index:2;">
+                <div id="drawCircle" style="width:300px; height:300px; position:relative; display:flex; align-items:center; justify-content:center; margin:0 auto 30px;">
+                    <!-- 法阵背景 -->
+                    <div class="circle-initial" style="position:absolute; width:100%; height:100%; border:3px solid var(--cyan-glow); border-radius:50%; box-shadow:0 0 30px var(--cyan-glow);"></div>
+                    <div class="circle-initial-reverse" style="position:absolute; width:80%; height:80%; border:2px solid var(--gold-glow); border-radius:50%; box-shadow:0 0 20px var(--gold-glow);"></div>
+                    <div class="circle-initial-slow" style="position:absolute; width:60%; height:60%; border:1px solid var(--purple-glow); border-radius:50%; box-shadow:0 0 15px var(--purple-glow);"></div>
+                    
+                    <!-- 法阵中心 -->
+                    <div id="drawResult" style="font-size:24px; font-weight:bold; text-align:center; z-index:10; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                        <div style="margin-bottom:20px; color:var(--gold-glow);">法阵准备就绪</div>
+                        <button class="btn btn-gold" onclick="startDraw()" style="padding:15px 30px; font-size:18px;">🌟 点亮法阵</button>
+                    </div>
+                    
+                    <!-- 结果显示 -->
+                    <div id="drawResultDisplay" class="hidden" style="position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:15;">
+                        <div id="selectedStudent" style="font-size:42px; font-weight:900; color:var(--gold-glow); text-shadow: 0 0 20px var(--gold-glow);"></div>
+                    </div>
+                </div>
+                
+                <!-- 按钮区域 -->
+                <div id="drawButtons" class="hidden" style="display:flex; gap:15px; margin-top:20px;">
+                    <button class="btn btn-cyan" onclick="resetDraw()" style="padding:12px 30px;">🔄 重新抽签</button>
+                    <button class="btn btn-purple" onclick="closeDrawModal()" style="padding:12px 30px;">✓ 确定</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 数据统计模态框 -->
+    <div class="modal" id="statisticsModal">
+        <div class="modal-content" style="max-width:1000px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h2 style="color:var(--purple-glow);">📊 数据统计与分析</h2>
+                <button class="btn btn-small" onclick="closeStatisticsModal()">关闭 ✖</button>
+            </div>
+            
+            <!-- 标签页 -->
+            <div class="tabs">
+                <div class="tab active" onclick="switchStatisticsTab('overview', this)">班级概览</div>
+                <div class="tab" onclick="switchStatisticsTab('subject', this)">学科分析</div>
+                <div class="tab" onclick="switchStatisticsTab('ranking', this)">学生排名</div>
+                <div class="tab" onclick="switchStatisticsTab('report', this)">学习报告</div>
+            </div>
+            
+            <!-- 班级概览 -->
+            <div id="tabOverview" class="panel">
+                <div class="grid">
+                    <div class="glass-card">
+                        <div style="font-size:48px; margin-bottom:10px;">👥</div>
+                        <h3 style="margin-bottom:5px;">班级人数</h3>
+                        <div id="totalStudents" style="font-size:32px; font-weight:900; color:var(--gold-glow);">0</div>
+                    </div>
+                    <div class="glass-card">
+                        <div style="font-size:48px; margin-bottom:10px;">☀️</div>
+                        <h3 style="margin-bottom:5px;">平均阳光</h3>
+                        <div id="avgScore" style="font-size:32px; font-weight:900; color:var(--gold-glow);">0</div>
+                    </div>
+                    <div class="glass-card">
+                        <div style="font-size:48px; margin-bottom:10px;">🐾</div>
+                        <h3 style="margin-bottom:5px;">平均宠物等级</h3>
+                        <div id="avgPetLevel" style="font-size:32px; font-weight:900; color:var(--gold-glow);">0</div>
+                    </div>
+                    <div class="glass-card">
+                        <div style="font-size:48px; margin-bottom:10px;">🏆</div>
+                        <h3 style="margin-bottom:5px;">总成就数</h3>
+                        <div id="totalAchievements" style="font-size:32px; font-weight:900; color:var(--gold-glow);">0</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top:30px;">
+                    <h3 style="margin-bottom:15px; color:var(--text-sub);">学生活跃度</h3>
+                    <div id="activityChart" style="background:rgba(0,0,0,0.3); border-radius:20px; padding:20px;"></div>
+                </div>
+            </div>
+            
+            <!-- 学科分析 -->
+            <div id="tabSubject" class="panel hidden">
+                <div style="display:flex; gap:20px; flex-wrap:wrap;">
+                    <div style="flex:1; min-width:250px; background:rgba(0,0,0,0.3); border-radius:20px; padding:20px;">
+                        <h3 style="margin-bottom:15px; color:var(--cyan-glow);">数学</h3>
+                        <div id="mathStats" style="font-size:18px;"></div>
+                    </div>
+                    <div style="flex:1; min-width:250px; background:rgba(0,0,0,0.3); border-radius:20px; padding:20px;">
+                        <h3 style="margin-bottom:15px; color:var(--purple-glow);">语文</h3>
+                        <div id="chineseStats" style="font-size:18px;"></div>
+                    </div>
+                    <div style="flex:1; min-width:250px; background:rgba(0,0,0,0.3); border-radius:20px; padding:20px;">
+                        <h3 style="margin-bottom:15px; color:var(--gold-glow);">英语</h3>
+                        <div id="englishStats" style="font-size:18px;"></div>
+                    </div>
+                    <div style="flex:1; min-width:250px; background:rgba(0,0,0,0.3); border-radius:20px; padding:20px;">
+                        <h3 style="margin-bottom:15px; color:var(--pink-glow);">科学</h3>
+                        <div id="scienceStats" style="font-size:18px;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 学生排名 -->
+            <div id="tabRanking" class="panel hidden">
+                <div style="margin-bottom:15px;">
+                    <select id="rankingType" onchange="updateRanking()" style="padding:8px 12px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); border-radius:12px; color:#fff; font-size:14px;">
+                        <option value="score">阳光值排名</option>
+                        <option value="petLevel">宠物等级排名</option>
+                        <option value="achievements">成就数量排名</option>
+                        <option value="correctRate">答题正确率排名</option>
+                    </select>
+                </div>
+                <div id="rankingList" style="max-height:500px; overflow-y:auto;"></div>
+            </div>
+            
+            <!-- 学习报告 -->
+            <div id="tabReport" class="panel hidden">
+                <div style="margin-bottom:20px;">
+                    <h3 style="margin-bottom:15px; color:var(--text-sub);">生成学习报告</h3>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                        <button class="btn btn-cyan" onclick="generateClassReport()">📋 生成班级报告</button>
+                        <button class="btn btn-purple" onclick="generateStudentReports()">📄 生成学生报告</button>
+                        <button class="btn btn-gold" onclick="exportStatistics()">💾 导出数据</button>
+                    </div>
+                </div>
+                <div id="reportContent" style="background:rgba(0,0,0,0.3); border-radius:20px; padding:20px; margin-top:20px;"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- 创建班级模态框 -->
     <div class="modal" id="createClassModal">
@@ -1213,6 +1428,861 @@
                 playSound('click'); 
             }
         });
+
+        // ========== 抽签功能 ==========
+        function showDrawModal() {
+            const modal = document.getElementById('drawModal');
+            modal.classList.add('active');
+            // 重置状态
+            document.getElementById('drawResult').classList.remove('hidden');
+            document.getElementById('drawResultDisplay').classList.add('hidden');
+            document.getElementById('drawButtons').classList.add('hidden');
+            document.getElementById('selectedStudent').textContent = '';
+            // 初始化星光效果
+            initStarfield();
+        }
+
+        function closeDrawModal() {
+            const modal = document.getElementById('drawModal');
+            modal.classList.remove('active');
+            // 重置抽签状态，确保下次打开时正常
+            resetDraw();
+        }
+
+        function startDraw() {
+            // 获取当前班级的学生列表
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                showFeedback('当前班级没有学生！', 'error');
+                return;
+            }
+
+            // 显示抽签动画
+            const drawResult = document.getElementById('drawResult');
+            const drawCircle = document.getElementById('drawCircle');
+            const resultDisplay = document.getElementById('drawResultDisplay');
+            const selectedStudent = document.getElementById('selectedStudent');
+
+            // 确保结果显示区域隐藏
+            resultDisplay.classList.add('hidden');
+            drawResult.classList.remove('hidden');
+
+            // 播放音效
+            playSound('mutate');
+
+            // 清空显示，不显示文字
+            drawResult.innerHTML = '';
+            // 开始星光汇聚效果
+            startStarConvergence();
+
+            // 清除呼吸效果
+            drawCircle.classList.remove('circle-container-breathe');
+
+            // 增强法阵动画 - 开始多维度旋转
+            const circles = drawCircle.querySelectorAll('div[style*="border-radius:50%"]');
+            
+            // 切换到三维旋转状态
+            const magicClasses = ['circle-magic', 'circle-magic-reverse', 'circle-magic-slow'];
+            const initialClasses = ['circle-initial', 'circle-initial-reverse', 'circle-initial-slow'];
+            const allClasses = [
+                'circle-initial', 'circle-initial-reverse', 'circle-initial-slow',
+                'circle-magic', 'circle-magic-reverse', 'circle-magic-slow',
+                'circle-result', 'circle-result-reverse', 'circle-result-slow'
+            ];
+            
+            circles.forEach((circle, index) => {
+                // 1. 移除所有动画类
+                allClasses.forEach(cls => circle.classList.remove(cls));
+                // 2. 强制触发重排
+                void circle.offsetWidth;
+                // 3. 使用setTimeout确保状态更新
+                setTimeout(() => {
+                    // 4. 添加魔法旋转类
+                    circle.classList.add(magicClasses[index]);
+                    // 5. 增强发光效果
+                    circle.style.boxShadow = `0 0 ${30 + index * 5}px ${['var(--cyan-glow)', 'var(--gold-glow)', 'var(--purple-glow)'][index % 3]}`;
+                }, 10);
+            });
+
+            // 随机抽取学生
+            setTimeout(() => {
+                // 随机选择学生
+                const randomIndex = Math.floor(Math.random() * students.length);
+                const student = students[randomIndex];
+
+                // 停止多维度旋转，恢复平面旋转
+                const resultClasses = ['circle-result', 'circle-result-reverse', 'circle-result-slow'];
+                
+                circles.forEach((circle, index) => {
+                    // 1. 移除所有动画类
+                    allClasses.forEach(cls => circle.classList.remove(cls));
+                    // 2. 强制触发重排
+                    void circle.offsetWidth;
+                    // 3. 使用setTimeout确保状态更新
+                    setTimeout(() => {
+                        // 4. 添加结果状态类
+                        circle.classList.add(resultClasses[index]);
+                        // 5. 恢复默认发光效果
+                        circle.style.boxShadow = `0 0 ${20 + index * 5}px ${['var(--cyan-glow)', 'var(--gold-glow)', 'var(--purple-glow)'][index % 3]}`;
+                    }, 10);
+                });
+                
+                // 添加呼吸效果
+                drawCircle.classList.add('circle-container-breathe');
+
+                // 显示结果 - 直接在圆环中心显示学生名字
+                drawResult.classList.add('hidden');
+                resultDisplay.classList.remove('hidden');
+                document.getElementById('drawButtons').classList.remove('hidden');
+                selectedStudent.textContent = student.name;
+
+                // 播放成功音效
+                playSound('success');
+            }, 5000); // 增加到5秒，确保光点有足够时间聚集
+        }
+
+        function resetDraw() {
+            // 重置抽签状态
+            const drawResult = document.getElementById('drawResult');
+            const resultDisplay = document.getElementById('drawResultDisplay');
+            const selectedStudent = document.getElementById('selectedStudent');
+            const drawCircle = document.getElementById('drawCircle');
+
+            // 重置显示状态
+            resultDisplay.classList.add('hidden');
+            document.getElementById('drawButtons').classList.add('hidden');
+            drawResult.classList.remove('hidden');
+            drawResult.innerHTML = '<div style="margin-bottom:20px; color:var(--gold-glow);">法阵准备就绪</div><button class="btn btn-gold" onclick="startDraw()" style="padding:15px 30px; font-size:18px;">🌟 点亮法阵</button>';
+            selectedStudent.textContent = '';
+
+            // 清除呼吸效果
+            drawCircle.classList.remove('circle-container-breathe');
+
+            // 重置法阵动画 - 恢复平面旋转
+            const circles = drawCircle.querySelectorAll('div[style*="border-radius:50%"]');
+            
+            // 所有可能的动画类
+            const allClasses = [
+                'circle-initial', 'circle-initial-reverse', 'circle-initial-slow',
+                'circle-magic', 'circle-magic-reverse', 'circle-magic-slow',
+                'circle-result', 'circle-result-reverse', 'circle-result-slow'
+            ];
+            
+            // 初始状态类
+            const initialClasses = ['circle-initial', 'circle-initial-reverse', 'circle-initial-slow'];
+            
+            circles.forEach((circle, index) => {
+                // 1. 移除所有动画类
+                allClasses.forEach(cls => circle.classList.remove(cls));
+                // 2. 强制触发重排
+                void circle.offsetWidth;
+                // 3. 使用setTimeout确保状态更新
+                setTimeout(() => {
+                    // 4. 添加初始状态类
+                    circle.classList.add(initialClasses[index]);
+                    // 5. 恢复默认发光效果
+                    circle.style.boxShadow = `0 0 ${20 + index * 5}px ${['var(--cyan-glow)', 'var(--gold-glow)', 'var(--purple-glow)'][index % 3]}`;
+                }, 10);
+            });
+            
+            // 重新初始化星光效果
+            initStarfield();
+        }
+
+        function initStarfield() {
+            const starfield = document.getElementById('starfield');
+            starfield.innerHTML = '';
+            
+            // 创建星光
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.style.position = 'absolute';
+                star.style.width = Math.random() * 2 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.backgroundColor = '#fff';
+                star.style.borderRadius = '50%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.opacity = Math.random() * 0.5 + 0.3;
+                star.style.animation = `pulse ${Math.random() * 3 + 2}s infinite ease-in-out`;
+                starfield.appendChild(star);
+            }
+            
+            // 创建萤火
+            for (let i = 0; i < 20; i++) {
+                const firefly = document.createElement('div');
+                firefly.style.position = 'absolute';
+                firefly.style.width = Math.random() * 3 + 2 + 'px';
+                firefly.style.height = firefly.style.width;
+                const colors = ['#fbbf24', '#2dd4bf', '#c084fc', '#f472b6'];
+                firefly.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                firefly.style.borderRadius = '50%';
+                firefly.style.left = Math.random() * 100 + '%';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.opacity = Math.random() * 0.6 + 0.4;
+                firefly.style.boxShadow = `0 0 ${Math.random() * 10 + 5}px ${firefly.style.backgroundColor}`;
+                firefly.style.animation = `firefly ${Math.random() * 4 + 3}s infinite ease-in-out`;
+                starfield.appendChild(firefly);
+            }
+        }
+        
+        function startStarConvergence() {
+            const starfield = document.getElementById('starfield');
+            const stars = starfield.querySelectorAll('div');
+            const drawCircle = document.getElementById('drawCircle');
+            const circleRect = drawCircle.getBoundingClientRect();
+            const modalRect = document.querySelector('#drawModal .modal-content').getBoundingClientRect();
+            
+            // 计算法阵中心相对于starfield的位置
+            const centerX = (circleRect.left + circleRect.width / 2 - modalRect.left) / modalRect.width * 100;
+            const centerY = (circleRect.top + circleRect.height / 2 - modalRect.top) / modalRect.height * 100;
+            
+            stars.forEach((star, index) => {
+                setTimeout(() => {
+                    // 调整动画时间，确保光点有足够时间聚集
+                    star.style.transition = `all ${Math.random() * 1.5 + 1.5}s cubic-bezier(0.2, 0.8, 0.2, 1)`;
+                    star.style.left = centerX + '%';
+                    star.style.top = centerY + '%';
+                    star.style.opacity = '0';
+                    star.style.transform = 'scale(0)';
+                }, index * 30); // 减少延迟，让光点更快开始聚集
+            });
+        }
+        
+        function getCurrentClassStudents() {
+            // 获取当前班级的学生列表
+            if (appMode === 'offline') {
+                // 离线模式：从本地存储获取
+                const storedData = localStorage.getItem('petClassData');
+                if (storedData) {
+                    try {
+                        const classData = JSON.parse(storedData);
+                        return classData.students || [];
+                    } catch (e) {
+                        return [];
+                    }
+                }
+                return [];
+            } else {
+                // 在线模式：从当前学生列表获取
+                if (students) {
+                    return students;
+                }
+                return [];
+            }
+        }
+
+        // ========== 数据统计功能 ==========
+        function showStatisticsModal() {
+            const modal = document.getElementById('statisticsModal');
+            modal.classList.add('active');
+            // 加载统计数据
+            loadStatisticsData();
+        }
+
+        function closeStatisticsModal() {
+            const modal = document.getElementById('statisticsModal');
+            modal.classList.remove('active');
+        }
+
+        function switchStatisticsTab(tabName, element) {
+            // 切换标签页
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
+
+            // 显示对应内容
+            const tabContents = ['tabOverview', 'tabSubject', 'tabRanking', 'tabReport'];
+            tabContents.forEach(content => {
+                document.getElementById(content).classList.add('hidden');
+            });
+            document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.remove('hidden');
+
+            // 加载对应数据
+            if (tabName === 'ranking') {
+                updateRanking();
+            }
+        }
+
+        function loadStatisticsData() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                showFeedback('当前班级没有学生数据！', 'error');
+                return;
+            }
+
+            // 计算班级概览数据
+            calculateOverview(students);
+            // 计算学科分析数据
+            calculateSubjectStats(students);
+        }
+
+        function calculateOverview(students) {
+            // 班级人数
+            document.getElementById('totalStudents').textContent = students.length;
+
+            // 平均阳光
+            const totalScore = students.reduce((sum, student) => sum + (student.score || 0), 0);
+            const avgScore = students.length > 0 ? Math.round(totalScore / students.length) : 0;
+            document.getElementById('avgScore').textContent = avgScore;
+
+            // 平均宠物等级
+            let totalPetLevel = 0;
+            let petCount = 0;
+            students.forEach(student => {
+                if (student.pets && student.pets.length > 0) {
+                    student.pets.forEach(pet => {
+                        totalPetLevel += pet.stage || 0;
+                        petCount++;
+                    });
+                }
+            });
+            const avgPetLevel = petCount > 0 ? (totalPetLevel / petCount).toFixed(1) : '未设置';
+            document.getElementById('avgPetLevel').textContent = avgPetLevel;
+
+            // 总成就数
+            let totalAchievements = 0;
+            students.forEach(student => {
+                if (student.achievements && student.achievements.unlocked) {
+                    totalAchievements += student.achievements.unlocked.length;
+                }
+            });
+            document.getElementById('totalAchievements').textContent = totalAchievements;
+
+            // 学生活跃度
+            renderActivityChart(students);
+        }
+
+        function calculateSubjectStats(students) {
+            const subjects = ['math', 'chinese', 'english', 'science'];
+            const subjectNames = { math: '数学', chinese: '语文', english: '英语', science: '科学' };
+
+            subjects.forEach(subject => {
+                let totalCorrect = 0;
+                let totalAttempts = 0;
+                let highestScore = 0;
+                let lowestScore = Infinity;
+
+                students.forEach(student => {
+                    if (student.achievements && student.achievements.progress && student.achievements.progress.subjectStats) {
+                        const subjectStat = student.achievements.progress.subjectStats[subject] || 0;
+                        totalCorrect += subjectStat;
+                        totalAttempts += 1; // 简化计算，实际应该记录尝试次数
+                        highestScore = Math.max(highestScore, subjectStat);
+                        lowestScore = Math.min(lowestScore, subjectStat);
+                    }
+                });
+
+                const avgScore = totalAttempts > 0 ? Math.round(totalCorrect / totalAttempts) : 0;
+                // 优化正确率计算，确保不超过100%
+                const correctRate = totalAttempts > 0 ? Math.min(100, Math.round((totalCorrect / Math.max(totalCorrect, totalAttempts)) * 100)) : 0;
+
+                const statsHTML = `
+                    <div style="margin-bottom:10px;">总答对题数: <span style="color:var(--cyan-glow); font-weight:bold;">${totalCorrect}</span></div>
+                    <div style="margin-bottom:10px;">平均答对题数: <span style="color:var(--gold-glow); font-weight:bold;">${avgScore}</span></div>
+                    <div style="margin-bottom:10px;">最高答对题数: <span style="color:var(--purple-glow); font-weight:bold;">${highestScore || 0}</span></div>
+                    <div style="margin-bottom:10px;">最低答对题数: <span style="color:var(--pink-glow); font-weight:bold;">${lowestScore === Infinity ? 0 : lowestScore}</span></div>
+                    <div style="margin-bottom:10px;">正确率: <span style="color:var(--green-glow, #2dd4bf); font-weight:bold;">${correctRate}%</span></div>
+                `;
+
+                document.getElementById(`${subject}Stats`).innerHTML = statsHTML;
+            });
+        }
+
+        function updateRanking() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                document.getElementById('rankingList').innerHTML = '<p style="text-align:center; color:var(--text-sub);">当前班级没有学生数据！</p>';
+                return;
+            }
+
+            const rankingType = document.getElementById('rankingType').value;
+            let sortedStudents;
+
+            switch (rankingType) {
+                case 'score':
+                    sortedStudents = [...students].sort((a, b) => (b.score || 0) - (a.score || 0));
+                    break;
+                case 'petLevel':
+                    sortedStudents = [...students].sort((a, b) => {
+                        const levelA = a.pets && a.pets.length > 0 ? Math.max(...a.pets.map(p => p.stage || 0)) : 0;
+                        const levelB = b.pets && b.pets.length > 0 ? Math.max(...b.pets.map(p => p.stage || 0)) : 0;
+                        return levelB - levelA;
+                    });
+                    break;
+                case 'achievements':
+                    sortedStudents = [...students].sort((a, b) => {
+                        const achievementsA = a.achievements && a.achievements.unlocked ? a.achievements.unlocked.length : 0;
+                        const achievementsB = b.achievements && b.achievements.unlocked ? b.achievements.unlocked.length : 0;
+                        return achievementsB - achievementsA;
+                    });
+                    break;
+                case 'correctRate':
+                    sortedStudents = [...students].sort((a, b) => {
+                        const statsA = a.achievements && a.achievements.progress && a.achievements.progress.subjectStats ? 
+                            Object.values(a.achievements.progress.subjectStats).reduce((sum, val) => sum + val, 0) : 0;
+                        const statsB = b.achievements && b.achievements.progress && b.achievements.progress.subjectStats ? 
+                            Object.values(b.achievements.progress.subjectStats).reduce((sum, val) => sum + val, 0) : 0;
+                        return statsB - statsA;
+                    });
+                    break;
+            }
+
+            // 生成排名列表
+            let rankingHTML = '';
+            sortedStudents.forEach((student, index) => {
+                let value = 0;
+                switch (rankingType) {
+                    case 'score':
+                        value = student.score || 0;
+                        break;
+                    case 'petLevel':
+                        value = student.pets && student.pets.length > 0 ? Math.max(...student.pets.map(p => p.stage || 0)) : 0;
+                        break;
+                    case 'achievements':
+                        value = student.achievements && student.achievements.unlocked ? student.achievements.unlocked.length : 0;
+                        break;
+                    case 'correctRate':
+                        value = student.achievements && student.achievements.progress && student.achievements.progress.subjectStats ? 
+                            Object.values(student.achievements.progress.subjectStats).reduce((sum, val) => sum + val, 0) : 0;
+                        break;
+                }
+
+                rankingHTML += `
+                    <div class="list-item" style="display:flex; justify-content:space-between; align-items:center; padding:15px; background:rgba(0,0,0,0.2); border-radius:15px; margin-bottom:10px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <div style="width:30px; height:30px; border-radius:50%; background:${index < 3 ? ['var(--gold-glow)', 'var(--cyan-glow)', 'var(--purple-glow)'][index] : 'rgba(255,255,255,0.2)'};
+                                display:flex; align-items:center; justify-content:center; font-weight:bold;">${index + 1}</div>
+                            <div>
+                                <div style="font-weight:bold;">${student.name}</div>
+                                <div style="font-size:12px; color:var(--text-sub);">${rankingType === 'score' ? '阳光值' : rankingType === 'petLevel' ? '宠物等级' : rankingType === 'achievements' ? '成就数量' : '总答对题数'}</div>
+                            </div>
+                        </div>
+                        <div style="font-size:20px; font-weight:bold; color:${index < 3 ? ['var(--gold-glow)', 'var(--cyan-glow)', 'var(--purple-glow)'][index] : 'var(--text-main)'};">${value}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('rankingList').innerHTML = rankingHTML;
+        }
+
+        function generateClassReport() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                showFeedback('当前班级没有学生数据！', 'error');
+                return;
+            }
+
+            // 计算班级统计数据
+            const totalStudents = students.length;
+            const totalScore = students.reduce((sum, student) => sum + (student.score || 0), 0);
+            const avgScore = totalStudents > 0 ? Math.round(totalScore / totalStudents) : 0;
+
+            let totalAchievements = 0;
+            let totalPets = 0;
+            students.forEach(student => {
+                if (student.achievements && student.achievements.unlocked) {
+                    totalAchievements += student.achievements.unlocked.length;
+                }
+                if (student.pets) {
+                    totalPets += student.pets.length;
+                }
+            });
+
+            // 生成报告
+            const reportHTML = `
+                <h3 style="color:var(--gold-glow); margin-bottom:20px;">班级学习报告</h3>
+                <div style="margin-bottom:20px;">
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">基本信息</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">班级人数</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${totalStudents}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">平均阳光值</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${avgScore}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">总成就数</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${totalAchievements}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">总宠物数</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${totalPets}</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">学科表现</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        ${['math', 'chinese', 'english', 'science'].map(subject => {
+                            let totalCorrect = 0;
+                            students.forEach(student => {
+                                if (student.achievements && student.achievements.progress && student.achievements.progress.subjectStats) {
+                                    totalCorrect += student.achievements.progress.subjectStats[subject] || 0;
+                                }
+                            });
+                            const avgCorrect = totalStudents > 0 ? Math.round(totalCorrect / totalStudents) : 0;
+                            return `
+                                <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                                    <div style="font-size:14px; color:var(--text-sub);">${{ math: '数学', chinese: '语文', english: '英语', science: '科学' }[subject]}</div>
+                                    <div style="font-size:24px; font-weight:bold; color:${{ math: 'var(--cyan-glow)', chinese: 'var(--purple-glow)', english: 'var(--gold-glow)', science: 'var(--pink-glow)' }[subject]};">${avgCorrect}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">报告生成时间</h4>
+                    <div style="color:var(--text-sub);">${new Date().toLocaleString()}</div>
+                </div>
+                <div style="margin-top:20px; text-align:center;">
+                    <button class="btn btn-cyan" onclick="downloadReport('class')" style="margin-right:10px;">📥 下载报告</button>
+                    <button class="btn btn-purple" onclick="printReport()" style="margin-right:10px;">🖨️ 打印报告</button>
+                </div>
+            `;
+
+            document.getElementById('reportContent').innerHTML = reportHTML;
+        }
+
+        function generateStudentReports() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                showFeedback('当前班级没有学生数据！', 'error');
+                return;
+            }
+
+            const reportHTML = `
+                <h3 style="color:var(--gold-glow); margin-bottom:20px;">学生学习报告</h3>
+                <div style="margin-bottom:20px;">
+                    <p style="color:var(--text-sub); margin-bottom:15px;">点击下方按钮生成并下载所有学生的学习报告：</p>
+                    <button class="btn btn-cyan" onclick="downloadAllStudentReports()" style="width:100%;">📥 生成并下载所有学生报告</button>
+                </div>
+                <div style="margin-top:20px;">
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">学生列表</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap:10px;">
+                        ${students.map(student => `
+                            <div class="glass-card" onclick="generateSingleStudentReport('${student.id}')" style="cursor:pointer;">
+                                <div style="font-size:32px; margin-bottom:10px;">👤</div>
+                                <h3>${student.name}</h3>
+                                <div style="font-size:14px; color:var(--text-sub); margin-top:5px;">阳光值: ${student.score || 0}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('reportContent').innerHTML = reportHTML;
+        }
+
+        function generateSingleStudentReport(studentId) {
+            const students = getCurrentClassStudents();
+            const student = students.find(s => s.id === studentId);
+            if (!student) return;
+
+            // 计算学生数据
+            const score = student.score || 0;
+            const petCount = student.pets ? student.pets.length : 0;
+            const highestPetLevel = student.pets && student.pets.length > 0 ? Math.max(...student.pets.map(p => p.stage || 0)) : 0;
+            const achievementsCount = student.achievements && student.achievements.unlocked ? student.achievements.unlocked.length : 0;
+
+            // 学科数据
+            const subjectStats = student.achievements && student.achievements.progress && student.achievements.progress.subjectStats ? 
+                student.achievements.progress.subjectStats : { math: 0, chinese: 0, english: 0, science: 0 };
+
+            // 生成报告
+            const reportHTML = `
+                <h3 style="color:var(--gold-glow); margin-bottom:20px;">${student.name} - 学习报告</h3>
+                <div style="margin-bottom:20px;">
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">基本信息</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">阳光值</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${score}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">宠物数量</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${petCount}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">最高宠物等级</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${highestPetLevel}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                            <div style="font-size:14px; color:var(--text-sub);">成就数量</div>
+                            <div style="font-size:24px; font-weight:bold; color:var(--gold-glow);">${achievementsCount}</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-bottom:20px;">
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">学科表现</h4>
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:15px;">
+                        ${Object.entries(subjectStats).map(([subject, value]) => `
+                            <div style="background:rgba(0,0,0,0.2); padding:15px; border-radius:12px;">
+                                <div style="font-size:14px; color:var(--text-sub);">${{ math: '数学', chinese: '语文', english: '英语', science: '科学' }[subject]}</div>
+                                <div style="font-size:24px; font-weight:bold; color:${{ math: 'var(--cyan-glow)', chinese: 'var(--purple-glow)', english: 'var(--gold-glow)', science: 'var(--pink-glow)' }[subject]};">${value}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color:var(--text-sub); margin-bottom:10px;">报告生成时间</h4>
+                    <div style="color:var(--text-sub);">${new Date().toLocaleString()}</div>
+                </div>
+                <div style="margin-top:20px; text-align:center;">
+                    <button class="btn btn-cyan" onclick="downloadReport('student', '${student.id}')" style="margin-right:10px;">📥 下载报告</button>
+                    <button class="btn btn-purple" onclick="printReport()" style="margin-right:10px;">🖨️ 打印报告</button>
+                </div>
+            `;
+
+            document.getElementById('reportContent').innerHTML = reportHTML;
+        }
+
+        function exportStatistics() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) {
+                showFeedback('当前班级没有学生数据！', 'error');
+                return;
+            }
+
+            // 准备导出数据
+            const exportData = students.map(student => {
+                const subjectStats = student.achievements && student.achievements.progress && student.achievements.progress.subjectStats ? 
+                    student.achievements.progress.subjectStats : { math: 0, chinese: 0, english: 0, science: 0 };
+                
+                return {
+                    姓名: student.name,
+                    阳光值: student.score || 0,
+                    宠物数量: student.pets ? student.pets.length : 0,
+                    最高宠物等级: student.pets && student.pets.length > 0 ? Math.max(...student.pets.map(p => p.stage || 0)) : 0,
+                    成就数量: student.achievements && student.achievements.unlocked ? student.achievements.unlocked.length : 0,
+                    数学答对题数: subjectStats.math || 0,
+                    语文答对题数: subjectStats.chinese || 0,
+                    英语答对题数: subjectStats.english || 0,
+                    科学答对题数: subjectStats.science || 0
+                };
+            });
+
+            // 导出为JSON文件
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `班级统计数据_${new Date().toISOString().slice(0, 10)}.json`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            showFeedback('数据导出成功！', 'success');
+        }
+
+        function downloadReport(type, studentId = null) {
+            const reportContent = document.getElementById('reportContent').innerHTML;
+            const dataStr = `
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>学习报告</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+                        .report { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                        h3 { color: #ffd700; text-align: center; }
+                        h4 { color: #666; }
+                        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+                        .card { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+                        .value { font-size: 24px; font-weight: bold; color: #ffd700; }
+                        .label { font-size: 14px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="report">
+                        ${reportContent.replace(/<button[^>]*>.*?<\/button>/g, '')}
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const dataBlob = new Blob([dataStr], { type: 'text/html' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${type === 'class' ? '班级' : '学生'}学习报告_${new Date().toISOString().slice(0, 10)}.html`;
+            link.click();
+            URL.revokeObjectURL(url);
+
+            showFeedback('报告下载成功！', 'success');
+        }
+
+        function printReport() {
+            const reportContent = document.getElementById('reportContent').innerHTML;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>学习报告</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; background: white; padding: 20px; }
+                        .report { max-width: 800px; margin: 0 auto; }
+                        h3 { color: #ffd700; text-align: center; }
+                        h4 { color: #666; }
+                        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+                        .card { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+                        .value { font-size: 24px; font-weight: bold; color: #ffd700; }
+                        .label { font-size: 14px; color: #666; }
+                    </style>
+                </head>
+                <body>
+                    <div class="report">
+                        ${reportContent.replace(/<button[^>]*>.*?<\/button>/g, '')}
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function downloadAllStudentReports() {
+            const students = getCurrentClassStudents();
+            if (students.length === 0) return;
+
+            // 为每个学生生成报告并下载
+            students.forEach(student => {
+                // 计算学生数据
+                const score = student.score || 0;
+                const petCount = student.pets ? student.pets.length : 0;
+                const highestPetLevel = student.pets && student.pets.length > 0 ? Math.max(...student.pets.map(p => p.stage || 0)) : 0;
+                const achievementsCount = student.achievements && student.achievements.unlocked ? student.achievements.unlocked.length : 0;
+
+                // 学科数据
+                const subjectStats = student.achievements && student.achievements.progress && student.achievements.progress.subjectStats ? 
+                    student.achievements.progress.subjectStats : { math: 0, chinese: 0, english: 0, science: 0 };
+
+                // 生成报告
+                const reportContent = `
+                    <html>
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>${student.name} - 学习报告</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+                            .report { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+                            h3 { color: #ffd700; text-align: center; }
+                            h4 { color: #666; }
+                            .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+                            .card { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 1px solid #eee; }
+                            .value { font-size: 24px; font-weight: bold; color: #ffd700; }
+                            .label { font-size: 14px; color: #666; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="report">
+                            <h3>${student.name} - 学习报告</h3>
+                            <div>
+                                <h4>基本信息</h4>
+                                <div class="grid">
+                                    <div class="card">
+                                        <div class="label">阳光值</div>
+                                        <div class="value">${score}</div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="label">宠物数量</div>
+                                        <div class="value">${petCount}</div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="label">最高宠物等级</div>
+                                        <div class="value">${highestPetLevel}</div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="label">成就数量</div>
+                                        <div class="value">${achievementsCount}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4>学科表现</h4>
+                                <div class="grid">
+                                    ${Object.entries(subjectStats).map(([subject, value]) => `
+                                        <div class="card">
+                                            <div class="label">${{ math: '数学', chinese: '语文', english: '英语', science: '科学' }[subject]}</div>
+                                            <div class="value">${value}</div>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <div>
+                                <h4>报告生成时间</h4>
+                                <div class="label">${new Date().toLocaleString()}</div>
+                            </div>
+                        </div>
+                    </body>
+                    </html>
+                `;
+
+                const dataBlob = new Blob([reportContent], { type: 'text/html' });
+                const url = URL.createObjectURL(dataBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${student.name}_学习报告_${new Date().toISOString().slice(0, 10)}.html`;
+                link.click();
+                URL.revokeObjectURL(url);
+            });
+
+            showFeedback('所有学生报告已生成并下载！', 'success');
+        }
+
+        function renderActivityChart(students) {
+            // 计算学生活跃度
+            let highActive = 0;
+            let mediumActive = 0;
+            let lowActive = 0;
+
+            students.forEach(student => {
+                // 根据学生的阳光值、成就数和宠物数量计算活跃度
+                const score = student.score || 0;
+                const achievements = student.achievements && student.achievements.unlocked ? student.achievements.unlocked.length : 0;
+                const petCount = student.pets ? student.pets.length : 0;
+
+                // 活跃度评分
+                const activityScore = score + (achievements * 10) + (petCount * 5);
+
+                if (activityScore > 200) {
+                    highActive++;
+                } else if (activityScore > 100) {
+                    mediumActive++;
+                } else {
+                    lowActive++;
+                }
+            });
+
+            // 生成活跃度图表
+            const activityHTML = `
+                <div style="text-align:center; padding:20px;">
+                    <h4 style="margin-bottom:20px; color:var(--text-sub);">学生活跃度分布</h4>
+                    <div style="display:flex; justify-content:space-around; flex-wrap:wrap;">
+                        ${[
+                            { level: '高活跃', count: highActive, color: 'var(--green-glow, #2dd4bf)' },
+                            { level: '中活跃', count: mediumActive, color: 'var(--gold-glow)' },
+                            { level: '低活跃', count: lowActive, color: 'var(--red-glow)' }
+                        ].map((item, index) => `
+                            <div style="text-align:center; margin:10px;">
+                                <div style="width:100px; height:100px; border-radius:50%; background:${item.color}; opacity:0.2; display:flex; align-items:center; justify-content:center; margin:0 auto 10px;">
+                                    <div style="font-size:32px; font-weight:bold; color:${item.color};">${item.count}</div>
+                                </div>
+                                <div style="color:var(--text-sub);">${item.level}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="margin-top:20px; font-size:14px; color:var(--text-sub);">
+                        <p>活跃度计算基于：阳光值 + 成就数×10 + 宠物数×5</p>
+                        <p>高活跃: >200分 | 中活跃: 101-200分 | 低活跃: ≤100分</p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('activityChart').innerHTML = activityHTML;
+        }
 
         // ========== 核心进化体系 ==========
         const EVOLUTION_THRESHOLDS = [0, 500, 1500];
